@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="PRMS Physician Portal - Doctor Dashboard, Patient Records, and Telehealth.">
+  <meta name="theme-color" content="#0A6E79">
+  <title>PRMS | Doctor Dashboard</title>
+  
+  <!-- Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="app-container" id="appContainer">
+
+    <!-- HEADER -->
+    <header class="app-header" role="banner">
+      <div class="header-left">
+        <button type="button" class="hamburger-btn touch-target" id="hamburgerBtn" aria-label="Open navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <a href="#doc-overview" class="brand-logo">
+          <div class="logo-icon-wrapper"><img src="images/logo.png" alt="PRMS Logo" class="brand-logo-img"></div>
+          <div class="logo-text-group">
+            <span class="brand-name">PRMS<span class="brand-dot"></span></span>
+            <span class="brand-tagline">Care beyond records</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Center Search -->
+      <div class="header-center">
+        <div class="search-bar" role="search" style="position: relative;">
+          <i class="fa-solid fa-magnifying-glass" style="color: var(--text-muted);"></i>
+          <input type="search" id="globalSearchInput" placeholder="Search patients, EHR records, lab reports..." aria-label="Search records">
+          
+          <div class="search-results-dropdown" id="searchResultsDropdown">
+            <div id="searchResultsContent"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Header Right -->
+      <div class="header-right">
+        <span class="badge-tag approved">Doctor Portal</span>
+
+        <!-- Notification Bell -->
+        <div class="notification-dropdown-wrapper">
+          <button type="button" class="header-icon-btn touch-target" id="notificationBtn">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notification-badge" id="notificationBadge"></span>
+          </button>
+
+          <div class="notification-dropdown-menu" id="notificationDropdownMenu">
+            <div class="notification-dropdown-header">
+              <div class="notification-dropdown-title">
+                <span>Clinical Alerts</span>
+                <span class="notification-count-pill" id="notifCountPill">2 New</span>
+              </div>
+              <div class="notification-header-actions">
+                <span class="notification-action-link" id="markAllReadBtn">Mark read</span>
+                <span style="color: var(--border-color);">•</span>
+                <span class="notification-action-link" id="clearAllNotifsBtn">Clear</span>
+              </div>
+            </div>
+            <div class="notification-list-container" id="notificationListContainer"></div>
+          </div>
+        </div>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown-wrapper">
+          <button type="button" class="patient-profile-btn touch-target" id="patientProfileBtn">
+            <div class="avatar-wrapper" style="background: linear-gradient(135deg, #1A2B3C, #2ECC71);">
+              <span>RC</span>
+              <span class="avatar-status-dot"></span>
+            </div>
+            <div class="patient-info">
+              <span class="patient-name">Dr. Robert Chen, MD</span>
+              <span class="patient-id">ID: DOC-1082</span>
+            </div>
+          </button>
+
+          <div class="profile-dropdown-menu" id="profileDropdownMenu">
+            <div class="profile-dropdown-user">
+              <div class="avatar-wrapper" style="background: linear-gradient(135deg, #1A2B3C, #2ECC71);">
+                <span>RC</span>
+              </div>
+              <div>
+                <div class="profile-user-name">Dr. Robert Chen, MD</div>
+                <div class="profile-user-role">Attending Physician (Cardiology)</div>
+                <div class="profile-user-id">Doctor ID: DOC-1082</div>
+              </div>
+            </div>
+
+            <div class="profile-menu-section-title">Current Session</div>
+            <div class="role-switcher-list">
+              <div class="role-switcher-item current" style="cursor: default;">
+                <span><i class="fa-solid fa-user-doctor" style="color: var(--primary); margin-right: 6px;"></i> Active: Doctor Portal</span>
+                <span class="status-chip optimal" style="font-size: 10px; padding: 2px 6px;">Authenticated</span>
+              </div>
+            </div>
+
+            <div class="profile-menu-section-title">Account & Security</div>
+            <div class="role-switcher-list">
+              <a href="signin.html" class="role-switcher-item">
+                <span><i class="fa-solid fa-right-to-bracket" style="margin-right: 6px; color: var(--primary);"></i> Switch / Sign In as Different Role</span>
+              </a>
+            </div>
+
+            <button type="button" class="profile-logout-btn touch-target" id="logoutBtn">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span>Log Out</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Top-Right Log Out Button -->
+        <a href="signin.html" class="header-auth-btn touch-target" id="headerLogoutQuickBtn" title="Log Out / Sign In">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="header-auth-label">Log Out</span>
+        </a>
+
+      </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div>
+        <div class="sidebar-header">
+          <a href="#doc-overview" class="brand-logo">
+            <div class="logo-icon-wrapper"><img src="images/logo.png" alt="PRMS Logo" class="brand-logo-img"></div>
+            <div class="logo-text-group">
+              <span class="brand-name">PRMS<span class="brand-dot"></span></span>
+              <span class="brand-tagline">Care beyond records</span>
+            </div>
+          </a>
+          <button type="button" class="sidebar-close-btn touch-target" id="sidebarCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+          <button type="button" class="collapse-toggle-btn touch-target" id="collapseSidebarBtn"><i class="fa-solid fa-chevron-left"></i></button>
+        </div>
+
+        <nav class="sidebar-content">
+          <div class="nav-section-title">Physician Portal</div>
+          <ul class="nav-list">
+            <li class="nav-item">
+              <a href="#doc-overview" class="nav-link active" data-view="doc-overview">
+                <i class="fa-solid fa-stethoscope"></i>
+                <span class="nav-text">Clinical Overview</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#doc-appointments" class="nav-link" data-view="doc-appointments">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span class="nav-text">Appointments</span>
+                <span class="nav-badge">4 Today</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#doc-records" class="nav-link" data-view="doc-records">
+                <i class="fa-solid fa-folder-medical"></i>
+                <span class="nav-text">Patient Records</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#doc-prescriptions" class="nav-link" data-view="doc-prescriptions">
+                <i class="fa-solid fa-prescription"></i>
+                <span class="nav-text">Prescriptions</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#doc-reports" class="nav-link" data-view="doc-reports">
+                <i class="fa-solid fa-file-waveform"></i>
+                <span class="nav-text">Diagnostic Reports</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="avatar-wrapper" style="background: linear-gradient(135deg, #1A2B3C, #2ECC71);">
+            <span>RC</span>
+          </div>
+          <div class="user-card-details">
+            <span class="user-card-name">Dr. Robert Chen, MD</span>
+            <span class="user-card-role">Cardiology Lead</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="app-main" id="mainContent" role="main">
+
+      <!-- VIEW 1: OVERVIEW -->
+      <section class="view-section active" id="view-doc-overview">
+        <div class="doctor-hero-banner">
+          <div class="doctor-hero-left">
+            <div class="patient-badge-chip" style="background: rgba(255,255,255,0.15); color: #fff;">
+              <span>Cardiology Dept. • Clinical Lead</span>
+            </div>
+            <h1>Good evening, Dr. Robert Chen</h1>
+            <p>You have 4 patient consultations scheduled today and 2 diagnostic reports requiring clinical evaluation.</p>
+          </div>
+          <div>
+            <button type="button" class="btn-secondary touch-target" id="docCreateRxQuickBtn">
+              <i class="fa-solid fa-plus" style="margin-right: 6px;"></i> Write New Prescription
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="staff-stats-grid">
+          <div class="staff-stat-card">
+            <div class="staff-stat-icon teal"><i class="fa-solid fa-calendar-day" style="font-size: 20px;"></i></div>
+            <div>
+              <div class="staff-stat-val">4</div>
+              <div class="staff-stat-label">Appointments Today</div>
+            </div>
+          </div>
+
+          <div class="staff-stat-card">
+            <div class="staff-stat-icon green"><i class="fa-solid fa-hospital-user" style="font-size: 20px;"></i></div>
+            <div>
+              <div class="staff-stat-val">128</div>
+              <div class="staff-stat-label">Total Assigned Patients</div>
+            </div>
+          </div>
+
+          <div class="staff-stat-card">
+            <div class="staff-stat-icon gold"><i class="fa-solid fa-microscope" style="font-size: 20px;"></i></div>
+            <div>
+              <div class="staff-stat-val">3</div>
+              <div class="staff-stat-label">Pending Lab Reviews</div>
+            </div>
+          </div>
+
+          <div class="staff-stat-card">
+            <div class="staff-stat-icon blue"><i class="fa-solid fa-pills" style="font-size: 20px;"></i></div>
+            <div>
+              <div class="staff-stat-val">2</div>
+              <div class="staff-stat-label">Refill Approvals Pending</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Doctor Schedule & Quick Queue -->
+        <div class="dashboard-grid-two-col">
+          <div class="info-card">
+            <div class="section-header-row">
+              <h3 class="section-title">Today's Patient Schedule</h3>
+              <button type="button" class="btn-outline touch-target" id="docViewScheduleBtn" style="min-height: 34px; padding: 0 10px; font-size: 12px;">Full Calendar</button>
+            </div>
+            <div class="calendar-slot-list" id="docTodayScheduleList"></div>
+          </div>
+
+          <div class="info-card">
+            <div class="section-header-row">
+              <h3 class="section-title">Diagnostic Reports for Evaluation</h3>
+              <span class="status-chip borderline">2 Unreviewed</span>
+            </div>
+            <div class="report-items-wrapper" id="docUnreviewedReportsList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: APPOINTMENTS -->
+      <section class="view-section" id="view-doc-appointments">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Appointment Management & Telehealth</h2>
+            <p class="view-subtitle">Review upcoming consultations, reschedule visits, or initiate video appointments.</p>
+          </div>
+          <button type="button" class="btn-primary touch-target" id="docAddAppBtn">
+            <i class="fa-solid fa-calendar-plus" style="margin-right: 6px;"></i> Add New Appointment
+          </button>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Patient Name & ID</th>
+                <th>Appointment Type</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="docAppointmentsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW 3: PATIENT RECORDS -->
+      <section class="view-section" id="view-doc-records">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Complete Patient Medical Records</h2>
+            <p class="view-subtitle">Access comprehensive patient history, biomarker charts, and add clinical notes.</p>
+          </div>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Patient Name & ID</th>
+                <th>Age / Gender</th>
+                <th>Primary Diagnosis</th>
+                <th>Last Visit</th>
+                <th>Recent Biomarkers</th>
+                <th>Clinical Actions</th>
+              </tr>
+            </thead>
+            <tbody id="docPatientsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW 4: PRESCRIPTIONS -->
+      <section class="view-section" id="view-doc-prescriptions">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Prescription Management & Authorizations</h2>
+            <p class="view-subtitle">Generate electronic prescriptions, approve pharmacy refill requests, and review history.</p>
+          </div>
+          <button type="button" class="btn-primary touch-target" id="docWriteRxBtn">
+            <i class="fa-solid fa-prescription" style="margin-right: 6px;"></i> Create New Prescription
+          </button>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Patient Name</th>
+                <th>Medication & Dosage</th>
+                <th>Frequency & Instructions</th>
+                <th>Date Prescribed</th>
+                <th>Refills Left</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="docPrescriptionsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW 5: DIAGNOSTIC REPORTS -->
+      <section class="view-section" id="view-doc-reports">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Diagnostic Reports & Physician Notes</h2>
+            <p class="view-subtitle">Review AI biomarker extractions, lab panels, and attach physician notes.</p>
+          </div>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Patient & Document</th>
+                <th>Category</th>
+                <th>Date Analyzed</th>
+                <th>Key Biomarkers</th>
+                <th>Doctor Evaluation Note</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="docReportsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL: WRITE PRESCRIPTION -->
+  <div class="modal-backdrop" id="doctorPrescriptionModal" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Write Electronic Prescription</h3>
+          <span style="font-size: 12px; color: var(--text-muted);">Attending Physician: Dr. Robert Chen, MD</span>
+        </div>
+        <button type="button" class="modal-close-btn touch-target" id="closeDoctorRxModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="doctorNewRxForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="rxPatientSelect">Select Patient</label>
+            <select class="form-select" id="rxPatientSelect" required>
+              <option value="Sarah Jenkins">Sarah Jenkins (ID: PRMS-84920)</option>
+              <option value="David Miller">David Miller (ID: PRMS-71932)</option>
+              <option value="Amanda Garcia">Amanda Garcia (ID: PRMS-62941)</option>
+              <option value="Michael Ross">Michael Ross (ID: PRMS-51048)</option>
+            </select>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label" for="rxMedName">Medication Name</label>
+              <input type="text" class="form-input" id="rxMedName" placeholder="e.g. Lisinopril" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="rxDosage">Dosage</label>
+              <input type="text" class="form-input" id="rxDosage" placeholder="e.g. 10mg" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label" for="rxFrequency">Frequency</label>
+              <input type="text" class="form-input" id="rxFrequency" placeholder="e.g. 1 tablet daily" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="rxDuration">Duration / Supply</label>
+              <input type="text" class="form-input" id="rxDuration" placeholder="e.g. 30 Days" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="rxInstructions">Clinical Instructions</label>
+            <textarea class="form-input" id="rxInstructions" rows="2" style="height: auto; padding: 10px;" placeholder="Take with food. Monitor blood pressure weekly."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-outline touch-target" id="cancelDoctorRxBtn">Cancel</button>
+          <button type="submit" class="btn-primary touch-target">
+            <i class="fa-solid fa-signature" style="margin-right: 6px;"></i> Sign & Issue Prescription
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: RESCHEDULE APPOINTMENT -->
+  <div class="modal-backdrop" id="rescheduleModal" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Reschedule Consultation</h3>
+          <span style="font-size: 12px; color: var(--text-muted);" id="reschedulePatientName">Patient: Sarah Jenkins</span>
+        </div>
+        <button type="button" class="modal-close-btn touch-target" id="closeRescheduleModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="rescheduleForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="rescheduleDate">New Date</label>
+            <input type="date" class="form-input" id="rescheduleDate" value="2026-08-28" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="rescheduleTime">New Time</label>
+            <select class="form-select" id="rescheduleTime" required>
+              <option value="09:00 AM">09:00 AM</option>
+              <option value="10:30 AM" selected>10:30 AM</option>
+              <option value="02:00 PM">02:00 PM</option>
+              <option value="04:30 PM">04:30 PM</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-outline touch-target" id="cancelRescheduleBtn">Cancel</button>
+          <button type="submit" class="btn-primary touch-target">Confirm Reschedule</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CLINICAL NOTES -->
+  <div class="modal-backdrop" id="clinicalNotesModal" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Physician Clinical Assessment Note</h3>
+          <span style="font-size: 12px; color: var(--text-muted);" id="noteTargetName">Document: Metabolic Panel</span>
+        </div>
+        <button type="button" class="modal-close-btn touch-target" id="closeClinicalNotesModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="clinicalNotesForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="doctorClinicalNoteInput">Physician Findings & Treatment Directives</label>
+            <textarea class="form-input" id="doctorClinicalNoteInput" rows="4" style="height: auto; padding: 12px;" placeholder="Enter diagnostic observations, clinical interpretation, and treatment plan..." required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-outline touch-target" id="cancelClinicalNoteBtn">Cancel</button>
+          <button type="submit" class="btn-primary touch-target">Save Assessment Note</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

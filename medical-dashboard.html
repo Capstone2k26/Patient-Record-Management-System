@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="PRMS Medical Staff Portal - Pharmacy Refill Triage & Patient Notifications.">
+  <meta name="theme-color" content="#0A6E79">
+  <title>PRMS | Medical Staff Dashboard</title>
+  
+  <!-- Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="app-container" id="appContainer">
+
+    <!-- HEADER -->
+    <header class="app-header" role="banner">
+      <div class="header-left">
+        <button type="button" class="hamburger-btn touch-target" id="hamburgerBtn" aria-label="Open navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <a href="#med-overview" class="brand-logo">
+          <div class="logo-icon-wrapper">
+            <img src="images/logo.png" alt="PRMS Logo" class="brand-logo-img">
+          </div>
+          <div class="logo-text-group">
+            <span class="brand-name">PRMS<span class="brand-dot"></span></span>
+            <span class="brand-tagline">Care beyond records</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Center Search -->
+      <div class="header-center">
+        <div class="search-bar" role="search" style="position: relative;">
+          <i class="fa-solid fa-magnifying-glass" style="color: var(--text-muted);"></i>
+          <input type="search" id="globalSearchInput" placeholder="Search patients, refills, prescriptions..." aria-label="Search records">
+          
+          <div class="search-results-dropdown" id="searchResultsDropdown">
+            <div id="searchResultsContent"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Header Right -->
+      <div class="header-right">
+        <span class="badge-tag pending">Medical Staff</span>
+
+        <!-- Notification Bell -->
+        <div class="notification-dropdown-wrapper">
+          <button type="button" class="header-icon-btn touch-target" id="notificationBtn">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notification-badge" id="notificationBadge"></span>
+          </button>
+
+          <div class="notification-dropdown-menu" id="notificationDropdownMenu">
+            <div class="notification-dropdown-header">
+              <div class="notification-dropdown-title">
+                <span>Staff Alerts</span>
+                <span class="notification-count-pill" id="notifCountPill">3 New</span>
+              </div>
+              <div class="notification-header-actions">
+                <span class="notification-action-link" id="markAllReadBtn">Mark read</span>
+                <span style="color: var(--border-color);">•</span>
+                <span class="notification-action-link" id="clearAllNotifsBtn">Clear</span>
+              </div>
+            </div>
+            <div class="notification-list-container" id="notificationListContainer"></div>
+          </div>
+        </div>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown-wrapper">
+          <button type="button" class="patient-profile-btn touch-target" id="patientProfileBtn">
+            <div class="avatar-wrapper" style="background: linear-gradient(135deg, #3498DB, #0A6E79);">
+              <span>EV</span>
+              <span class="avatar-status-dot"></span>
+            </div>
+            <div class="patient-info">
+              <span class="patient-name">Elena Vance, RN</span>
+              <span class="patient-id">ID: MED-4029</span>
+            </div>
+          </button>
+
+          <div class="profile-dropdown-menu" id="profileDropdownMenu">
+            <div class="profile-dropdown-user">
+              <div class="avatar-wrapper" style="background: linear-gradient(135deg, #3498DB, #0A6E79);">
+                <span>EV</span>
+              </div>
+              <div>
+                <div class="profile-user-name">Elena Vance, RN</div>
+                <div class="profile-user-role">Medical Staff / Refill Liaison</div>
+                <div class="profile-user-id">Staff ID: MED-4029</div>
+              </div>
+            </div>
+
+            <div class="profile-menu-section-title">Current Session</div>
+            <div class="role-switcher-list">
+              <div class="role-switcher-item current" style="cursor: default;">
+                <span><i class="fa-solid fa-notes-medical" style="color: var(--primary); margin-right: 6px;"></i> Active: Medical Staff Portal</span>
+                <span class="status-chip optimal" style="font-size: 10px; padding: 2px 6px;">Authenticated</span>
+              </div>
+            </div>
+
+            <div class="profile-menu-section-title">Account & Security</div>
+            <div class="role-switcher-list">
+              <a href="signin.html" class="role-switcher-item">
+                <span><i class="fa-solid fa-right-to-bracket" style="margin-right: 6px; color: var(--primary);"></i> Switch / Sign In as Different Role</span>
+              </a>
+            </div>
+
+            <button type="button" class="profile-logout-btn touch-target" id="logoutBtn">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span>Log Out</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Top-Right Log Out Button -->
+        <a href="signin.html" class="header-auth-btn touch-target" id="headerLogoutQuickBtn" title="Log Out / Sign In">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="header-auth-label">Log Out</span>
+        </a>
+
+      </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div>
+        <div class="sidebar-header">
+          <a href="#med-overview" class="brand-logo">
+            <div class="logo-icon-wrapper"><img src="images/logo.png" alt="PRMS Logo" class="brand-logo-img"></div>
+            <div class="logo-text-group">
+              <span class="brand-name">PRMS<span class="brand-dot"></span></span>
+              <span class="brand-tagline">Care beyond records</span>
+            </div>
+          </a>
+          <button type="button" class="sidebar-close-btn touch-target" id="sidebarCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+          <button type="button" class="collapse-toggle-btn touch-target" id="collapseSidebarBtn"><i class="fa-solid fa-chevron-left"></i></button>
+        </div>
+
+        <nav class="sidebar-content">
+          <div class="nav-section-title">Medical Staff Portal</div>
+          <ul class="nav-list">
+            <li class="nav-item">
+              <a href="#med-overview" class="nav-link active" data-view="med-overview">
+                <i class="fa-solid fa-table-columns"></i>
+                <span class="nav-text">Staff Overview</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#med-refills" class="nav-link" data-view="med-refills">
+                <i class="fa-solid fa-pills"></i>
+                <span class="nav-text">Refill Requests</span>
+                <span class="nav-badge" id="sidebarRefillCount" style="background: var(--warning-soft); color: var(--warning);">3 Pending</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#med-notifications" class="nav-link" data-view="med-notifications">
+                <i class="fa-solid fa-bullhorn"></i>
+                <span class="nav-text">Send Patient Alert</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#med-patients" class="nav-link" data-view="med-patients">
+                <i class="fa-solid fa-users"></i>
+                <span class="nav-text">Assigned Patients</span>
+                <span class="nav-badge">6</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="avatar-wrapper" style="background: linear-gradient(135deg, #3498DB, #0A6E79);">
+            <span>EV</span>
+          </div>
+          <div class="user-card-details">
+            <span class="user-card-name">Elena Vance, RN</span>
+            <span class="user-card-role">Medical Staff</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="app-main" id="mainContent" role="main">
+
+      <!-- VIEW 1: OVERVIEW -->
+      <section class="view-section active" id="view-med-overview">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Medical Staff Dashboard</h2>
+            <p class="view-subtitle">Pharmacy refill triage, patient alert broadcasts, and assigned patient roster.</p>
+          </div>
+          <button type="button" class="btn-primary touch-target" id="medNewNotifBtn">
+            <i class="fa-solid fa-paper-plane" style="margin-right: 6px;"></i>
+            Send Patient Alert
+          </button>
+        </div>
+
+        <!-- Quick Stats Cards -->
+        <div class="staff-stats-grid">
+          <div class="staff-stat-card">
+            <div class="staff-stat-icon gold"><i class="fa-solid fa-prescription-bottle-medical" style="font-size: 20px;"></i></div>
+            <div>
+              <div class="staff-stat-val" id="medStatPendingRefills">3</div>
+              <div class="staff-stat-label">Pending Refill Requests</div>
+            </div>
+          </div>
+
+          <div class="staff-stat-card">
+            <div class="staff-stat-icon blue"><i class="fa-solid fa-bell" style="font-size: 20px;"></i></div>
+            <div>
+              <div class="staff-stat-val" id="medStatSentNotifs">14</div>
+              <div class="staff-stat-label">Notifications Sent Today</div>
+            </div>
+          </div>
+
+          <div class="staff-stat-card">
+            <div class="staff-stat-icon green"><i class="fa-solid fa-users" style="font-size: 20px;"></i></div>
+            <div>
+              <div class="staff-stat-val" id="medStatAssignedPatients">6</div>
+              <div class="staff-stat-label">Active Assigned Patients</div>
+            </div>
+          </div>
+
+          <div class="staff-stat-card">
+            <div class="staff-stat-icon teal"><i class="fa-solid fa-circle-check" style="font-size: 20px;"></i></div>
+            <div>
+              <div class="staff-stat-val">100%</div>
+              <div class="staff-stat-label">Refill SLA Compliance</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pending Refills Quick Table -->
+        <div class="info-card">
+          <div class="section-header-row">
+            <div>
+              <h3 class="section-title">Pending Medicine Refills Queue</h3>
+              <p class="section-subtitle">Process patient refill requests from authorized clinic pharmacies</p>
+            </div>
+            <button type="button" class="btn-outline touch-target" id="medViewAllRefillsBtn" style="min-height: 36px; padding: 0 12px; font-size: 12px;">View All Refills</button>
+          </div>
+          
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Patient Name & ID</th>
+                  <th>Medication & Dosage</th>
+                  <th>Request Date</th>
+                  <th>Pharmacy</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="medQuickRefillsTableBody">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: REFILLS -->
+      <section class="view-section" id="view-med-refills">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Medicine Refill Management</h2>
+            <p class="view-subtitle">Review, authorize, and track prescription fulfillment across network pharmacies.</p>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="filter-chips-group">
+            <button type="button" class="filter-chip active touch-target" data-refill-filter="all">All Requests</button>
+            <button type="button" class="filter-chip touch-target" data-refill-filter="pending">Pending Only</button>
+            <button type="button" class="filter-chip touch-target" data-refill-filter="approved">Approved</button>
+            <button type="button" class="filter-chip touch-target" data-refill-filter="rejected">Rejected</button>
+          </div>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Patient Name & ID</th>
+                <th>Medication</th>
+                <th>Doctor</th>
+                <th>Requested Date</th>
+                <th>Supply Days</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="medAllRefillsTableBody">
+              <!-- Loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW 3: NOTIFICATIONS -->
+      <section class="view-section" id="view-med-notifications">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Send Patient Notifications</h2>
+            <p class="view-subtitle">Send instant alerts for prescription ready, appointment reminders, and lab pickups.</p>
+          </div>
+        </div>
+
+        <div class="staff-form-card">
+          <h3 class="section-title" style="font-size: 1.125rem; margin-bottom: var(--space-4);">Compose Patient Notification</h3>
+          <form id="medSendNotifForm">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-bottom: var(--space-4);">
+              <div class="form-group">
+                <label class="form-label" for="notifPatientSelect">Recipient Patient</label>
+                <select class="form-select" id="notifPatientSelect" required>
+                  <option value="Sarah Jenkins">Sarah Jenkins (ID: PRMS-84920)</option>
+                  <option value="David Miller">David Miller (ID: PRMS-71932)</option>
+                  <option value="Amanda Garcia">Amanda Garcia (ID: PRMS-62941)</option>
+                  <option value="Michael Ross">Michael Ross (ID: PRMS-51048)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="notifTypeSelect">Alert Category</label>
+                <select class="form-select" id="notifTypeSelect" required>
+                  <option value="success">💊 Medicine Ready for Pickup</option>
+                  <option value="info">📅 Appointment Reminder (Upcoming Visit)</option>
+                  <option value="warning">🔬 New Test Results Available</option>
+                  <option value="danger">⚠️ Dosage / Protocol Update</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: var(--space-4);">
+              <label class="form-label" for="notifMessageInput">Notification Message</label>
+              <textarea class="form-input" id="notifMessageInput" rows="3" style="height: auto; padding: 12px;" placeholder="e.g. Your Atorvastatin 10mg prescription refill has been approved and is ready for pickup at CVS Pharmacy." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary touch-target">
+              <i class="fa-solid fa-paper-plane" style="margin-right: 6px;"></i> Send Notification to Patient
+            </button>
+          </form>
+        </div>
+
+        <div class="info-card">
+          <h3 class="section-title" style="font-size: 1.125rem; margin-bottom: var(--space-4);">Sent Patient Notification Log</h3>
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Recipient</th>
+                  <th>Type</th>
+                  <th>Message</th>
+                  <th>Sent Timestamp</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="medNotifLogTableBody">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 4: ASSIGNED PATIENTS -->
+      <section class="view-section" id="view-med-patients">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Assigned Patients Roster</h2>
+            <p class="view-subtitle">Limited staff view: Access contact and active medication tags (Full records restricted to doctors).</p>
+          </div>
+        </div>
+
+        <div class="role-info-banner" style="margin-bottom: var(--space-4);">
+          <i class="fa-solid fa-lock" style="color: var(--primary);"></i>
+          <span>Staff Privacy Notice: Detailed clinical diagnostic evaluations and doctor notes are restricted to attending physicians.</span>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Patient Name & ID</th>
+                <th>Age / Sex</th>
+                <th>Primary Doctor</th>
+                <th>Active Medications</th>
+                <th>Next Appointment</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="medPatientsTableBody">
+              <!-- Loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

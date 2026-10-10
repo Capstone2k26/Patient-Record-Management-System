@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description"
+    content="PRMS Patient Portal - Care Beyond Records. Secure health management, medical reports analysis, appointments, and prescriptions.">
+  <meta name="theme-color" content="#0A6E79">
+  <title>PRMS | Care Beyond Records - Patient Portal</title>
+
+  <!-- Preconnect to Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <!-- App Main Container (Grid layout for Desktop, Flex for Mobile) -->
+  <div class="app-container" id="appContainer">
+
+    <!-- ====================================================================
+         HEADER COMPONENT
+         ==================================================================== -->
+    <header class="app-header" role="banner">
+      <div class="header-left">
+        <!-- Mobile Hamburger Button -->
+        <button type="button" class="hamburger-btn touch-target" id="hamburgerBtn" aria-label="Open navigation menu"
+          aria-expanded="false" aria-controls="appSidebar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Brand Logo -->
+        <a href="#dashboard" class="brand-logo" id="headerBrandLogo">
+          <div class="logo-icon-wrapper" aria-hidden="true">
+            <img src="images/logo.png" alt="PRMS Logo" class="brand-logo-img">
+          </div>
+          <div class="logo-text-group">
+            <span class="brand-name">PRMS<span class="brand-dot"></span></span>
+            <span class="brand-tagline">Care beyond records</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Header Center Search Bar (Tablet/Desktop) with Live Search Dropdown -->
+      <div class="header-center">
+        <div class="search-bar" role="search" style="position: relative;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="search" id="globalSearchInput" placeholder="Search reports, vitals, prescriptions..."
+            aria-label="Search records">
+
+          <!-- Live Floating Search Results Dropdown -->
+          <div class="search-results-dropdown" id="searchResultsDropdown">
+            <div id="searchResultsContent"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Header Right Controls -->
+      <div class="header-right">
+
+        <!-- Interactive Demo State Switcher -->
+        <div class="demo-toggle-wrapper" title="Toggle Dashboard Locked / Unlocked State">
+          <span class="demo-toggle-label" id="stateLabel">Locked</span>
+          <label class="toggle-switch touch-target" aria-label="Toggle Dashboard Locked State">
+            <input type="checkbox" id="dashboardStateToggle" aria-checked="false">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <!-- Notification Bell & Dropdown -->
+        <div class="notification-dropdown-wrapper">
+          <button type="button" class="header-icon-btn touch-target" id="notificationBtn"
+            aria-label="Notifications (3 unread)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notification-badge" id="notificationBadge" aria-hidden="true"></span>
+          </button>
+
+          <!-- Notification Panel Dropdown -->
+          <div class="notification-dropdown-menu" id="notificationDropdownMenu">
+            <div class="notification-dropdown-header">
+              <div class="notification-dropdown-title">
+                <span>Notifications</span>
+                <span class="notification-count-pill" id="notifCountPill">3 New</span>
+              </div>
+              <div class="notification-header-actions">
+                <span class="notification-action-link" id="markAllReadBtn">Mark read</span>
+                <span style="color: var(--border-color);">•</span>
+                <span class="notification-action-link" id="clearAllNotifsBtn">Clear</span>
+              </div>
+            </div>
+
+            <div class="notification-list-container" id="notificationListContainer">
+              <!-- Dynamically rendered notification items -->
+            </div>
+
+            <div class="notification-dropdown-footer">
+              <span style="font-size: 11px; color: var(--text-muted);">Real-time clinical patient updates</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Patient Profile Avatar & Dropdown -->
+        <div class="profile-dropdown-wrapper">
+          <button type="button" class="patient-profile-btn touch-target" id="patientProfileBtn"
+            aria-label="Patient Profile - Sarah Jenkins">
+            <div class="avatar-wrapper">
+              <span>SJ</span>
+              <span class="avatar-status-dot" aria-hidden="true"></span>
+            </div>
+            <div class="patient-info">
+              <span class="patient-name">Sarah Jenkins</span>
+              <span class="patient-id">ID: PRMS-84920</span>
+            </div>
+          </button>
+
+          <!-- Profile Dropdown Menu -->
+          <div class="profile-dropdown-menu" id="profileDropdownMenu">
+            <div class="profile-dropdown-user">
+              <div class="avatar-wrapper" style="background: linear-gradient(135deg, #0A6E79, #F5A623);">
+                <span>SJ</span>
+              </div>
+              <div>
+                <div class="profile-user-name">Sarah Jenkins</div>
+                <div class="profile-user-role">Verified Patient</div>
+                <div class="profile-user-id">PRMS ID: PRMS-84920</div>
+              </div>
+            </div>
+
+            <div class="profile-menu-section-title">Current Session</div>
+            <div class="role-switcher-list">
+              <div class="role-switcher-item current" style="cursor: default;">
+                <span><i class="fa-solid fa-user-check" style="color: var(--primary); margin-right: 6px;"></i> Active: Patient Portal</span>
+                <span class="status-chip optimal" style="font-size: 10px; padding: 2px 6px;">Authenticated</span>
+              </div>
+            </div>
+
+            <div class="profile-menu-section-title">Account & Security</div>
+            <div class="role-switcher-list">
+              <a href="signin.html" class="role-switcher-item">
+                <span><i class="fa-solid fa-right-to-bracket" style="margin-right: 6px; color: var(--primary);"></i> Switch / Sign In as Different Role</span>
+              </a>
+            </div>
+
+            <button type="button" class="profile-logout-btn touch-target" id="logoutBtn">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span>Log Out</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Top-Right Log Out Button -->
+        <a href="signin.html" class="header-auth-btn touch-target" id="headerLogoutQuickBtn" title="Log Out / Sign In">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="header-auth-label">Log Out</span>
+        </a>
+
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         COLLAPSIBLE SIDEBAR & MOBILE DRAWER
+         ==================================================================== -->
+    <aside class="app-sidebar" id="appSidebar" aria-label="Main Navigation">
+      <div>
+        <div class="sidebar-header">
+          <a href="#dashboard" class="brand-logo">
+            <div class="logo-icon-wrapper">
+              <img src="images/logo.png" alt="PRMS Logo" class="brand-logo-img">
+            </div>
+            <div class="logo-text-group">
+              <span class="brand-name">PRMS<span class="brand-dot"></span></span>
+              <span class="brand-tagline">Care beyond records</span>
+            </div>
+          </a>
+
+          <!-- Mobile Sidebar Close Button -->
+          <button type="button" class="sidebar-close-btn touch-target" id="sidebarCloseBtn"
+            aria-label="Close navigation drawer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+
+          <!-- Desktop Sidebar Collapse Toggle Button -->
+          <button type="button" class="collapse-toggle-btn touch-target" id="collapseSidebarBtn"
+            aria-label="Collapse sidebar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <nav class="sidebar-content">
+          <div class="nav-section-title">Health Portal</div>
+          <ul class="nav-list" role="menubar">
+
+            <!-- 1. Dashboard -->
+            <li class="nav-item" role="none">
+              <a href="#dashboard" class="nav-link active" data-view="dashboard" role="menuitem">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                <span class="nav-text">Dashboard</span>
+                <span class="nav-badge locked-badge" id="navDashboardBadge">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                  Locked
+                </span>
+              </a>
+            </li>
+
+            <!-- 2. Upload Report -->
+            <li class="nav-item" role="none">
+              <a href="#upload" class="nav-link" data-view="upload" role="menuitem" id="sidebarUploadLink">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span class="nav-text">Upload Report</span>
+                <span class="nav-badge">New</span>
+              </a>
+            </li>
+
+            <!-- 3. My Reports -->
+            <li class="nav-item" role="none">
+              <a href="#reports" class="nav-link" data-view="reports" role="menuitem" id="sidebarReportsLink">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span class="nav-text">My Reports</span>
+                <span class="nav-badge" id="reportCountBadge">3</span>
+              </a>
+            </li>
+
+            <!-- 4. Appointments -->
+            <li class="nav-item" role="none">
+              <a href="#appointments" class="nav-link" data-view="appointments" role="menuitem"
+                id="sidebarAppointmentsLink">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span class="nav-text">Appointments</span>
+                <span class="nav-badge">1</span>
+              </a>
+            </li>
+
+            <!-- 5. Prescriptions -->
+            <li class="nav-item" role="none">
+              <a href="#prescriptions" class="nav-link" data-view="prescriptions" role="menuitem"
+                id="sidebarPrescriptionsLink">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10.5 20.5l10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path>
+                  <path d="m8.5 8.5 7 7"></path>
+                </svg>
+                <span class="nav-text">Prescriptions</span>
+                <span class="nav-badge">2</span>
+              </a>
+            </li>
+          </ul>
+
+          <!-- Sidebar Unlock Helper Box -->
+          <div class="sidebar-cta-box" id="sidebarCtaBox">
+            <div class="sidebar-cta-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <span class="sidebar-cta-title">Unlock Health Insights</span>
+            <p class="sidebar-cta-desc">Save a medical lab or diagnostic report to activate your interactive health
+              metrics.</p>
+            <button type="button" class="sidebar-cta-btn touch-target" id="sidebarUploadCtaBtn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              Upload Now
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="avatar-wrapper">
+            <span>SJ</span>
+          </div>
+          <div class="user-card-details">
+            <span class="user-card-name">Sarah Jenkins</span>
+            <span class="user-card-role">Verified Patient</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Sidebar Mobile Backdrop Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+    <!-- ====================================================================
+         MAIN APPLICATION AREA
+         ==================================================================== -->
+    <main class="app-main" id="mainContent" role="main">
+
+      <!-- ==========================================
+           VIEW 1: DASHBOARD (Locked or Live)
+           ========================================== -->
+      <section class="view-section active" id="view-dashboard" aria-labelledby="dashboardHeading">
+
+        <!-- Welcome Hero Banner -->
+        <div class="dashboard-welcome-banner">
+          <div class="welcome-content">
+            <div class="patient-badge-chip">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <span>HIPAA Compliant & Secure</span>
+            </div>
+            <h1 class="welcome-title" id="dashboardHeading">Welcome back, Sarah</h1>
+            <p class="welcome-subtitle">PRMS transforms raw medical documents into actionable health insights, biomarker
+              trends, and physician-ready summaries.</p>
+          </div>
+
+          <div class="welcome-quick-stats">
+            <div class="welcome-stat-chip">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <div>
+                <span class="stat-chip-label">Care Team</span>
+                <span class="stat-chip-val">Dr. Robert Chen</span>
+              </div>
+            </div>
+
+            <div class="welcome-stat-chip">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <div>
+                <span class="stat-chip-label">Next Visit</span>
+                <span class="stat-chip-val">Aug 24, 10:30 AM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LOCKED STATE AREA (Default initial state) -->
+        <div class="locked-dashboard-wrapper" id="lockedStateContainer">
+
+          <!-- Primary Locked Notice Callout -->
+          <div class="locked-notice-banner" role="alert">
+            <div class="locked-notice-grid">
+              <div class="locked-icon-badge">
+                <span class="pulse-ring"></span>
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+
+              <div class="locked-notice-text">
+                <span class="locked-status-pill">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                  Action Required
+                </span>
+                <h2 class="locked-main-heading">Your personal dashboard stays locked until a report is saved to your
+                  account.</h2>
+                <p class="locked-subtext">Upload your recent lab results, blood work, or doctor's notes. PRMS will
+                  automatically extract your biomarkers, track long-term health trends, and unlock your complete
+                  personalized overview.</p>
+              </div>
+
+              <div class="locked-cta-actions">
+                <button type="button" class="btn-secondary touch-target" id="unlockTriggerUploadBtn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  </svg>
+                  Upload Medical Report
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- "Build your health dashboard" CTA Section -->
+          <section class="build-dashboard-section" aria-labelledby="buildDashboardTitle">
+            <div class="section-header-row">
+              <div>
+                <h3 class="section-title" id="buildDashboardTitle">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                  </svg>
+                  Build your health dashboard
+                </h3>
+                <p class="section-subtitle">Securely upload diagnostic reports, prescription slips, or pathology
+                  documents to generate your vitals chart.</p>
+              </div>
+            </div>
+
+            <!-- Drag & Drop Upload Zone -->
+            <div class="upload-dropzone" id="dashboardDropzone" tabindex="0" role="button"
+              aria-label="Drop files here or click to upload report">
+              <input type="file" id="dashboardFileInput" class="hidden-file-input"
+                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.dcm">
+
+              <div class="dropzone-icon-circle">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+
+              <div class="dropzone-text-group">
+                <span class="dropzone-primary-text">Drag and drop your medical report here</span>
+                <span class="dropzone-secondary-text">or choose a file from your device (PDF, JPG, PNG, DOC)</span>
+              </div>
+
+              <div class="supported-formats-row">
+                <span class="format-tag">PDF</span>
+                <span class="format-tag">JPG / PNG</span>
+                <span class="format-tag">DOC</span>
+                <span class="format-tag">Max 25 MB</span>
+              </div>
+            </div>
+
+            <!-- Upload Action Buttons -->
+            <div class="upload-actions-bar">
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; width: 100%;">
+                <button type="button" class="btn-primary touch-target" id="browseFileBtn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                  </svg>
+                  Browse Files
+                </button>
+
+                <button type="button" class="btn-sample touch-target" id="quickSampleUploadBtn"
+                  title="Instant test with pre-filled Complete Blood Count report">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  ⚡ Try Sample Report (CBC Blood Work)
+                </button>
+              </div>
+            </div>
+
+            <!-- Upload Simulation Progress Bar -->
+            <div class="upload-progress-box" id="uploadProgressBox" aria-live="polite">
+              <div class="progress-header">
+                <div class="progress-file-info">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                  </svg>
+                  <div>
+                    <span class="progress-file-name" id="progressFileName">CBC_Comprehensive_Blood_Report.pdf</span>
+                    <span class="progress-file-size" id="progressFileSize">(1.4 MB)</span>
+                  </div>
+                </div>
+                <span class="progress-percentage" id="progressPercentage">0%</span>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progressBarFill"></div>
+              </div>
+              <div class="progress-status-msg" id="progressStatusMsg">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 14 14"></polyline>
+                </svg>
+                <span>Scanning document & extracting medical biomarkers...</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Locked Teaser Cards Preview -->
+          <div class="locked-teaser-grid" aria-hidden="true">
+            <div class="teaser-card">
+              <div class="teaser-card-header">
+                <div class="teaser-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                  </svg></div>
+                <span class="mini-lock-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg> Locked</span>
+              </div>
+              <div class="teaser-blurred-content">
+                <span class="mock-stat-val">94/100</span>
+                <div class="mock-pill-list">
+                  <div class="mock-pill"></div>
+                  <div class="mock-pill short"></div>
+                </div>
+              </div>
+              <div class="teaser-card-overlay"><span class="unlock-prompt-text">Health Score</span></div>
+            </div>
+
+            <div class="teaser-card">
+              <div class="teaser-card-header">
+                <div class="teaser-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="m4.93 4.93 4.24 4.24"></path>
+                  </svg></div>
+                <span class="mini-lock-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg> Locked</span>
+              </div>
+              <div class="teaser-blurred-content">
+                <span class="mock-stat-val">120 / 80</span>
+                <div class="mock-pill-list">
+                  <div class="mock-pill"></div>
+                  <div class="mock-pill short"></div>
+                </div>
+              </div>
+              <div class="teaser-card-overlay"><span class="unlock-prompt-text">Biomarkers & Vitals</span></div>
+            </div>
+
+            <div class="teaser-card">
+              <div class="teaser-card-header">
+                <div class="teaser-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                  </svg></div>
+                <span class="mini-lock-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg> Locked</span>
+              </div>
+              <div class="teaser-blurred-content">
+                <div class="mock-bar-chart">
+                  <div class="mock-bar" style="height: 40%;"></div>
+                  <div class="mock-bar" style="height: 70%;"></div>
+                  <div class="mock-bar" style="height: 55%;"></div>
+                  <div class="mock-bar" style="height: 90%;"></div>
+                </div>
+              </div>
+              <div class="teaser-card-overlay"><span class="unlock-prompt-text">Lab History Trends</span></div>
+            </div>
+
+            <div class="teaser-card">
+              <div class="teaser-card-header">
+                <div class="teaser-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path>
+                  </svg></div>
+                <span class="mini-lock-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg> Locked</span>
+              </div>
+              <div class="teaser-blurred-content">
+                <span class="mock-stat-val">3 Active</span>
+                <div class="mock-pill-list">
+                  <div class="mock-pill"></div>
+                  <div class="mock-pill short"></div>
+                </div>
+              </div>
+              <div class="teaser-card-overlay"><span class="unlock-prompt-text">Prescription Tracker</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- UNLOCKED STATE AREA (Live Interactive Health Metrics) -->
+        <div class="unlocked-dashboard-wrapper" id="unlockedStateContainer">
+
+          <!-- Live Vitals Grid -->
+          <div class="vitals-grid">
+            <div class="vital-card">
+              <div class="vital-card-header">
+                <span class="vital-title">Blood Pressure</span>
+                <div class="vital-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                      d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 7.65l.78.77L12 20.66l7.65-7.66.78-.77a5.4 5.4 0 0 0 0-7.65z">
+                    </path>
+                  </svg>
+                </div>
+              </div>
+              <div class="vital-value-row">
+                <span class="vital-value">120/78</span>
+                <span class="vital-unit">mmHg</span>
+              </div>
+              <div class="vital-status-row">
+                <span class="status-chip optimal">Optimal</span>
+                <span class="vital-ref-range">Ref: 120/80</span>
+              </div>
+            </div>
+
+            <div class="vital-card green">
+              <div class="vital-card-header">
+                <span class="vital-title">Fasting Blood Glucose</span>
+                <div class="vital-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="vital-value-row">
+                <span class="vital-value">92</span>
+                <span class="vital-unit">mg/dL</span>
+              </div>
+              <div class="vital-status-row">
+                <span class="status-chip optimal">Normal</span>
+                <span class="vital-ref-range">Ref: 70 - 99</span>
+              </div>
+            </div>
+
+            <div class="vital-card gold">
+              <div class="vital-card-header">
+                <span class="vital-title">Total Cholesterol</span>
+                <div class="vital-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 6v6l4 2"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="vital-value-row">
+                <span class="vital-value">176</span>
+                <span class="vital-unit">mg/dL</span>
+              </div>
+              <div class="vital-status-row">
+                <span class="status-chip optimal">Desirable</span>
+                <span class="vital-ref-range">Ref: &lt; 200</span>
+              </div>
+            </div>
+
+            <div class="vital-card">
+              <div class="vital-card-header">
+                <span class="vital-title">HbA1c</span>
+                <div class="vital-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="vital-value-row">
+                <span class="vital-value">5.3</span>
+                <span class="vital-unit">%</span>
+              </div>
+              <div class="vital-status-row">
+                <span class="status-chip optimal">Normal</span>
+                <span class="vital-ref-range">Ref: 4.0 - 5.6</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Two Column Analytics Chart & Extracted Reports -->
+          <div class="dashboard-grid-two-col">
+            <div class="analytics-card">
+              <div class="analytics-header">
+                <div>
+                  <h3 class="section-title" style="font-size: 1.125rem;">Biomarker Trajectory (6 Months)</h3>
+                  <p class="section-subtitle">Extracted from CBC Blood Works and Lipid Panels</p>
+                </div>
+                <div class="chart-period-tabs">
+                  <button type="button" class="period-tab-btn active touch-target" data-period="6M">6M</button>
+                  <button type="button" class="period-tab-btn touch-target" data-period="1Y">1Y</button>
+                  <button type="button" class="period-tab-btn touch-target" data-period="ALL">All</button>
+                </div>
+              </div>
+
+              <div class="biomarker-chart-container">
+                <svg class="chart-svg" viewBox="0 0 500 150" preserveAspectRatio="none">
+                  <line x1="0" y1="30" x2="500" y2="30" stroke="#E2E8F0" stroke-dasharray="3 3" />
+                  <line x1="0" y1="75" x2="500" y2="75" stroke="#E2E8F0" stroke-dasharray="3 3" />
+                  <line x1="0" y1="120" x2="500" y2="120" stroke="#E2E8F0" stroke-dasharray="3 3" />
+
+                  <path d="M20 95 C 100 110, 180 80, 260 70 C 340 60, 420 50, 480 45" fill="none" stroke="#0A6E79"
+                    stroke-width="3.5" stroke-linecap="round" />
+                  <path d="M20 60 C 100 50, 180 65, 260 85 C 340 90, 420 80, 480 75" fill="none" stroke="#F5A623"
+                    stroke-width="3" stroke-linecap="round" stroke-dasharray="4 2" />
+
+                  <circle cx="20" cy="95" r="4.5" fill="#0A6E79" />
+                  <circle cx="140" cy="88" r="4.5" fill="#0A6E79" />
+                  <circle cx="260" cy="70" r="4.5" fill="#0A6E79" />
+                  <circle cx="380" cy="55" r="4.5" fill="#0A6E79" />
+                  <circle cx="480" cy="45" r="5" fill="#0A6E79" stroke="#fff" stroke-width="2" />
+
+                  <circle cx="20" cy="60" r="4" fill="#F5A623" />
+                  <circle cx="140" cy="55" r="4" fill="#F5A623" />
+                  <circle cx="260" cy="85" r="4" fill="#F5A623" />
+                  <circle cx="380" cy="88" r="4" fill="#F5A623" />
+                  <circle cx="480" cy="75" r="4.5" fill="#F5A623" stroke="#fff" stroke-width="2" />
+                </svg>
+
+                <div class="chart-legend">
+                  <div class="legend-item"><span class="legend-dot teal"></span><span>Blood Glucose (mg/dL)</span></div>
+                  <div class="legend-item"><span class="legend-dot gold"></span><span>Total Cholesterol (mg/dL)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Reports List -->
+            <div class="reports-list-card">
+              <div class="section-header-row">
+                <h3 class="section-title" style="font-size: 1.125rem;">Saved Reports</h3>
+                <button type="button" class="btn-outline touch-target" id="viewAllReportsBtn"
+                  style="min-height: 36px; padding: 0 12px; font-size: 12px;">View All</button>
+              </div>
+
+              <div class="report-items-wrapper" id="dashboardReportList">
+                <div class="report-item">
+                  <div class="report-item-left">
+                    <div class="report-file-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      </svg></div>
+                    <div class="report-title-col">
+                      <span class="report-title">Comprehensive Metabolic Panel</span>
+                      <span class="report-meta">Aug 14, 2026 • Quest Diagnostics</span>
+                    </div>
+                  </div>
+                  <button type="button" class="action-icon-btn touch-target view-report-trigger"
+                    data-report-name="Comprehensive Metabolic Panel" data-report-date="Aug 14, 2026"><i
+                      class="fa-solid fa-eye"></i></button>
+                </div>
+
+                <div class="report-item">
+                  <div class="report-item-left">
+                    <div class="report-file-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      </svg></div>
+                    <div class="report-title-col">
+                      <span class="report-title">Lipid Profile & Glucose</span>
+                      <span class="report-meta">Jul 20, 2026 • LabCorp</span>
+                    </div>
+                  </div>
+                  <button type="button" class="action-icon-btn touch-target view-report-trigger"
+                    data-report-name="Lipid Profile & Glucose" data-report-date="Jul 20, 2026"><i
+                      class="fa-solid fa-eye"></i></button>
+                </div>
+
+                <div class="report-item">
+                  <div class="report-item-left">
+                    <div class="report-file-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      </svg></div>
+                    <div class="report-title-col">
+                      <span class="report-title">CBC with Differential Panel</span>
+                      <span class="report-meta">Jun 05, 2026 • Memorial Clinic</span>
+                    </div>
+                  </div>
+                  <button type="button" class="action-icon-btn touch-target view-report-trigger"
+                    data-report-name="CBC with Differential Panel" data-report-date="Jun 05, 2026"><i
+                      class="fa-solid fa-eye"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Row: Prescriptions & Upcoming Follow-ups -->
+          <div class="dashboard-bottom-grid">
+            <div class="info-card">
+              <div class="section-header-row">
+                <h3 class="section-title" style="font-size: 1.125rem;">Active Prescriptions</h3>
+                <span class="status-chip optimal">2 Refills Ready</span>
+              </div>
+              <div>
+                <div class="prescription-item">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="pill-icon"><i class="fa-solid fa-pills"></i></div>
+                    <div>
+                      <h4 style="font-size: 14px; font-weight: 600;">Metformin 500mg</h4>
+                      <p style="font-size: 12px; color: var(--text-secondary);">1 tablet with dinner daily • 45 days
+                        remaining</p>
+                    </div>
+                  </div>
+                  <button type="button" class="btn-outline touch-target patient-refill-btn" data-med="Metformin 500mg"
+                    style="min-height: 36px; padding: 0 12px; font-size: 12px;">Refill</button>
+                </div>
+
+                <div class="prescription-item">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="pill-icon"><i class="fa-solid fa-pills"></i></div>
+                    <div>
+                      <h4 style="font-size: 14px; font-weight: 600;">Atorvastatin 10mg</h4>
+                      <p style="font-size: 12px; color: var(--text-secondary);">1 tablet at bedtime • 18 days remaining
+                      </p>
+                    </div>
+                  </div>
+                  <button type="button" class="btn-outline touch-target patient-refill-btn" data-med="Atorvastatin 10mg"
+                    style="min-height: 36px; padding: 0 12px; font-size: 12px;">Refill</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <div class="section-header-row">
+                <h3 class="section-title" style="font-size: 1.125rem;">Upcoming Consultations</h3>
+                <span class="status-chip optimal">Confirmed</span>
+              </div>
+              <div>
+                <div class="appointment-item">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="calendar-icon"><i class="fa-solid fa-video"></i></div>
+                    <div>
+                      <h4 style="font-size: 14px; font-weight: 600;">Follow-up Consultation</h4>
+                      <p style="font-size: 12px; color: var(--text-secondary);">Dr. Robert Chen (Cardiology) • Aug 24,
+                        10:30 AM</p>
+                    </div>
+                  </div>
+                  <button type="button" class="btn-primary touch-target" id="joinCallBtn"
+                    style="min-height: 36px; padding: 0 12px; font-size: 12px;">Join Call</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ==========================================
+           VIEW 2: UPLOAD REPORT SECTION
+           ========================================== -->
+      <section class="view-section" id="view-upload" aria-labelledby="uploadHeading">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title" id="uploadHeading">Upload Medical Report</h2>
+            <p class="view-subtitle">Add medical records, lab panels, or scans to PRMS secure cloud.</p>
+          </div>
+        </div>
+
+        <div class="build-dashboard-section">
+          <div class="upload-dropzone" id="dedicatedDropzone">
+            <input type="file" id="dedicatedFileInput" class="hidden-file-input"
+              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.dcm">
+            <div class="dropzone-icon-circle">
+              <i class="fa-solid fa-cloud-arrow-up" style="font-size: 28px; color: var(--primary);"></i>
+            </div>
+            <div class="dropzone-text-group">
+              <span class="dropzone-primary-text">Select your medical file or drag here</span>
+              <span class="dropzone-secondary-text">Supported formats: PDF, JPG, PNG, DOC (Max 25MB)</span>
+            </div>
+            <button type="button" class="btn-primary touch-target" id="dedicatedBrowseBtn">Browse Files</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           VIEW 3: MY REPORTS
+           ========================================== -->
+      <section class="view-section" id="view-reports" aria-labelledby="reportsHeading">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title" id="reportsHeading">My Reports & Diagnostics</h2>
+            <p class="view-subtitle">Access, search, and download your analyzed clinical records.</p>
+          </div>
+          <button type="button" class="btn-primary touch-target" id="reportsUploadNewBtn">
+            <i class="fa-solid fa-plus" style="margin-right: 6px;"></i>
+            Upload New Report
+          </button>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Document Name</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Facility</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="patientReportsTableBody">
+              <tr>
+                <td><strong>Comprehensive Metabolic Panel</strong></td>
+                <td>Lab Work</td>
+                <td>Aug 14, 2026</td>
+                <td>Quest Diagnostics</td>
+                <td><span class="status-chip optimal">Extracted</span></td>
+                <td>
+                  <button type="button" class="btn-outline touch-target view-report-trigger"
+                    data-report-name="Comprehensive Metabolic Panel" data-report-date="Aug 14, 2026"
+                    style="min-height: 34px; padding: 0 10px; font-size: 12px;">View Summary</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Lipid Profile & Fasting Glucose</strong></td>
+                <td>Lab Work</td>
+                <td>Jul 20, 2026</td>
+                <td>LabCorp Central</td>
+                <td><span class="status-chip optimal">Extracted</span></td>
+                <td>
+                  <button type="button" class="btn-outline touch-target view-report-trigger"
+                    data-report-name="Lipid Profile & Fasting Glucose" data-report-date="Jul 20, 2026"
+                    style="min-height: 34px; padding: 0 10px; font-size: 12px;">View Summary</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>CBC with Differential Panel</strong></td>
+                <td>Hematology</td>
+                <td>Jun 05, 2026</td>
+                <td>Memorial Health</td>
+                <td><span class="status-chip optimal">Extracted</span></td>
+                <td>
+                  <button type="button" class="btn-outline touch-target view-report-trigger"
+                    data-report-name="CBC with Differential Panel" data-report-date="Jun 05, 2026"
+                    style="min-height: 34px; padding: 0 10px; font-size: 12px;">View Summary</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           VIEW 4: APPOINTMENTS
+           ========================================== -->
+      <section class="view-section" id="view-appointments" aria-labelledby="appHeading">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title" id="appHeading">Appointments & Schedule</h2>
+            <p class="view-subtitle">Manage in-person appointments and PRMS Telehealth video visits.</p>
+          </div>
+          <button type="button" class="btn-primary touch-target" id="bookNewAppBtn">
+            <i class="fa-solid fa-calendar-plus" style="margin-right: 6px;"></i>
+            Book Appointment
+          </button>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Doctor / Specialist</th>
+                <th>Type</th>
+                <th>Date & Time</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>Dr. Robert Chen</strong>
+                  <div style="font-size: 12px; color: var(--text-muted);">Cardiology Specialist</div>
+                </td>
+                <td>Follow-up Review</td>
+                <td>Aug 24, 2026 • 10:30 AM</td>
+                <td>PRMS Telehealth (Video)</td>
+                <td><span class="status-chip optimal">Confirmed</span></td>
+                <td>
+                  <button type="button" class="btn-primary touch-target" id="joinVideoBtn"
+                    style="min-height: 34px; padding: 0 12px; font-size: 12px;">Join Video</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           VIEW 5: PRESCRIPTIONS
+           ========================================== -->
+      <section class="view-section" id="view-prescriptions" aria-labelledby="rxHeading">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title" id="rxHeading">Prescriptions & Medications</h2>
+            <p class="view-subtitle">Active therapies, refill authorizations, and administration notes.</p>
+          </div>
+          <button type="button" class="btn-primary touch-target" id="requestRefillMainBtn">
+            <i class="fa-solid fa-pills" style="margin-right: 6px;"></i>
+            Request Medication Refill
+          </button>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Medication</th>
+                <th>Dosage & Frequency</th>
+                <th>Prescribed By</th>
+                <th>Days Left</th>
+                <th>Pharmacy</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Metformin HCl</strong></td>
+                <td>500mg • 1 tablet daily with dinner</td>
+                <td>Dr. Robert Chen</td>
+                <td><span class="status-chip optimal">45 Days</span></td>
+                <td>CVS Pharmacy (#4921)</td>
+                <td>
+                  <button type="button" class="btn-outline touch-target patient-refill-btn" data-med="Metformin HCl"
+                    style="min-height: 34px; padding: 0 10px; font-size: 12px;">Refill</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Atorvastatin Calcium</strong></td>
+                <td>10mg • 1 tablet nightly</td>
+                <td>Dr. Robert Chen</td>
+                <td><span class="status-chip borderline">18 Days</span></td>
+                <td>CVS Pharmacy (#4921)</td>
+                <td>
+                  <button type="button" class="btn-secondary touch-target patient-refill-btn"
+                    data-med="Atorvastatin Calcium" style="min-height: 34px; padding: 0 10px; font-size: 12px;">Refill
+                    Now</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- STICKY MOBILE BOTTOM NAVIGATION -->
+    <nav class="mobile-bottom-nav" aria-label="Mobile Bottom Navigation">
+      <a href="#dashboard" class="bottom-nav-item active touch-target" data-view="dashboard">
+        <i class="fa-solid fa-house"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="#reports" class="bottom-nav-item touch-target" data-view="reports">
+        <i class="fa-solid fa-file-medical"></i>
+        <span>Reports</span>
+      </a>
+      <a href="#upload" class="bottom-nav-item upload-highlight touch-target" data-view="upload"
+        aria-label="Upload Report">
+        <div class="fab-icon-bubble"><i class="fa-solid fa-plus"></i></div>
+        <span>Upload</span>
+      </a>
+      <a href="#appointments" class="bottom-nav-item touch-target" data-view="appointments">
+        <i class="fa-solid fa-calendar"></i>
+        <span>Visits</span>
+      </a>
+      <a href="#prescriptions" class="bottom-nav-item touch-target" data-view="prescriptions">
+        <i class="fa-solid fa-pills"></i>
+        <span>Meds</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- MODAL: REPORT VIEWER / EXTRACTED BIOMARKERS -->
+  <div class="modal-backdrop" id="reportViewerModal" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="modalReportTitle">Report Summary</h3>
+          <span style="font-size: 12px; color: var(--text-muted);" id="modalReportDate">Aug 14, 2026</span>
+        </div>
+        <button type="button" class="modal-close-btn touch-target" id="closeReportModalBtn">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div
+          style="background: var(--surface-alt); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <span style="font-size: 13px; font-weight: 700; color: var(--primary);">AI Biomarker Extraction</span>
+            <span class="status-chip optimal">Verified by PRMS OCR</span>
+          </div>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">All key laboratory indices were
+            verified against standard clinical reference ranges. No critical abnormalities detected.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div
+            style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-light);">
+            <span style="font-size: 13px; color: var(--text-secondary);">Fasting Glucose</span>
+            <span style="font-size: 13px; font-weight: 700; color: var(--primary);">92 mg/dL (Normal)</span>
+          </div>
+          <div
+            style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-light);">
+            <span style="font-size: 13px; color: var(--text-secondary);">Blood Pressure</span>
+            <span style="font-size: 13px; font-weight: 700; color: var(--primary);">120/78 mmHg (Optimal)</span>
+          </div>
+          <div
+            style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-light);">
+            <span style="font-size: 13px; color: var(--text-secondary);">Total Cholesterol</span>
+            <span style="font-size: 13px; font-weight: 700; color: var(--primary);">176 mg/dL (Desirable)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+            <span style="font-size: 13px; color: var(--text-secondary);">Platelet Count</span>
+            <span style="font-size: 13px; font-weight: 700; color: var(--primary);">265 x10³/µL (Normal)</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-outline touch-target" id="modalDismissBtn">Close</button>
+        <button type="button" class="btn-primary touch-target" id="downloadPdfBtn">
+          <i class="fa-solid fa-download" style="margin-right: 6px;"></i> Download PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Application Logic -->
+  <script src="js/app.js"></script>
+</body>
+
+</html>
