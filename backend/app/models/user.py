@@ -1,12 +1,31 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import json
+import os
+from flask import current_app
 
 class User:
     ROLES = ['patient', 'medical', 'doctor']
     
     @staticmethod
-    def create(db, data):
-        if User.find_by_username(db, data['username']):
+    def _get_data_file():
+        return os.path.join(current_app.config['DATA_DIR'], 'users.json')
+    
+    @staticmethod
+    def _load_users():
+        with open(User._get_data_file(), 'r') as f:
+            return json.load(f)
+    
+    @staticmethod
+    def _save_users(users):
+        with open(User._get_data_file(), 'w') as f:
+            json.dump(users, f, indent=2)
+    
+    @staticmethod
+    def create(data):
+        users = User._load_users()
+        
+        if User.find_by_username(data['username']):
             return None
         
         user_data = {
@@ -19,28 +38,24 @@ class User:
             'phone': data.get('phone'),
             'date_of_birth': data.get('date_of_birth'),
             'gender': data.get('gender'),
-            'created_at': datetime.utcnow(),
-            'updated_at': datetime.utcnow(),
+            'created_at': datetime.now().isoformat(),
+            'updated_at': datetime.now().isoformat(),
             'is_active': True
         }
         
-        result = db.users.insert_one(user_data)
-        user_data['_id'] = str(result.inserted_id)
+        users.append(user_data)
+        User._save_users(users)
         return user_data
     
     @staticmethod
-    def find_by_username(db, username):
-        user = db.users.find_one({'username': username})
-        if user:
-            user['_id'] = str(user['_id'])
-        return user
+    def find_by_username(username):
+        users = User._load_users()
+        return next((u for u in users if u['username'] == username), None)
     
     @staticmethod
-    def find_by_id(db, user_id):
-        user = db.users.find_one({'user_id': user_id})
-        if user:
-            user['_id'] = str(user['_id'])
-        return user
+    def find_by_id(user_id):
+        users = User._load_users()
+        return next((u for u in users if u['user_id'] == user_id), None)
     
     @staticmethod
     def verify_password(user, password):

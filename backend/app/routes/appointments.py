@@ -3,7 +3,9 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models.user import User
 from app.utils.validators import validate_required_fields
 from datetime import datetime
-from bson import ObjectId
+import json
+import os
+import uuid
 
 bp = Blueprint('appointments', __name__, url_prefix='/api/appointments')
 

@@ -1,9 +1,9 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from pymongo import MongoClient
 from datetime import timedelta
 import os
+import json
 
 def create_app():
     app = Flask(__name__)
@@ -24,9 +24,13 @@ def create_app():
     
     jwt = JWTManager(app)
     
-    mongo_uri = os.getenv('MONGO_URI', 'mongodb://localhost:27017/')
-    client = MongoClient(mongo_uri)
-    app.db = client[os.getenv('DB_NAME', 'prms_database')]
+    # Initialize JSON storage
+    data_dir = os.path.join(os.path.dirname(__file__), '..', 'data')
+    os.makedirs(data_dir, exist_ok=True)
+    app.config['DATA_DIR'] = data_dir
+    
+    # Initialize data files
+    init_data_files(data_dir)
     
     from app.routes import auth, records, dashboard, appointments, health_metrics
     app.register_blueprint(auth.bp)
@@ -40,3 +44,18 @@ def create_app():
         return {'status': 'healthy', 'message': 'PRMS Backend API is running'}, 200
     
     return app
+
+def init_data_files(data_dir):
+    files = {
+        'users.json': [],
+        'medical_records.json': [],
+        'appointments.json': [],
+        'health_metrics.json': [],
+        'notifications.json': []
+    }
+    
+    for filename, default_data in files.items():
+        filepath = os.path.join(data_dir, filename)
+        if not os.path.exists(filepath):
+            with open(filepath, 'w') as f:
+                json.dump(default_data, f, indent=2)

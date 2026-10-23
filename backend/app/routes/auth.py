@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from app.models.user import User
 from app.utils.validators import validate_required_fields
@@ -20,7 +20,7 @@ def register():
     if len(data['password']) < 6:
         return jsonify({'error': 'Password must be at least 6 characters'}), 400
     
-    user = User.create(current_app.db, data)
+    user = User.create(data)
     if not user:
         return jsonify({'error': 'Username already exists'}), 409
     
@@ -41,7 +41,7 @@ def login():
     if not is_valid:
         return jsonify({'error': error}), 400
     
-    user = User.find_by_username(current_app.db, data['username'])
+    user = User.find_by_username(data['username'])
     
     if not user or not User.verify_password(user, data['password']):
         return jsonify({'error': 'Invalid username or password'}), 401
@@ -61,7 +61,7 @@ def login():
 @jwt_required()
 def get_current_user():
     user_id = get_jwt_identity()
-    user = User.find_by_id(current_app.db, user_id)
+    user = User.find_by_id(user_id)
     
     if not user:
         return jsonify({'error': 'User not found'}), 404

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "apt-001",
+    "patient_id": "PRMS-84920",
+    "doctor_id": "DOC-1082",
+    "appointment_date": "2026-08-24",
+    "appointment_time": "10:30 AM",
+    "type": "PRMS Telehealth (Video)",
+    "notes": "Review quarterly metabolic panel and fasting glucose trajectory.",
+    "status": "confirmed",
+    "created_at": "2026-10-22T11:11:01.852456",
+    "updated_at": "2026-10-22T11:11:01.852468"
+  }
+]

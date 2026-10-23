@@ -1,26 +1,15 @@
-from pymongo import MongoClient
 from werkzeug.security import generate_password_hash
 from datetime import datetime
+import json
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
+# Initialize demo data
+data_dir = os.path.join(os.path.dirname(__file__), 'data')
+os.makedirs(data_dir, exist_ok=True)
 
-mongo_uri = os.getenv('MONGO_URI', 'mongodb://localhost:27017/')
-db_name = os.getenv('DB_NAME', 'prms_database')
+print("\nInitializing PRMS Data Storage...")
 
-print(f"Connecting to MongoDB: {mongo_uri}")
-client = MongoClient(mongo_uri)
-db = client[db_name]
-
-print("\n🗄️  Initializing PRMS Database...")
-
-db.users.delete_many({})
-db.medical_records.delete_many({})
-db.appointments.delete_many({})
-db.health_metrics.delete_many({})
-db.notifications.delete_many({})
-
+# Demo users
 demo_users = [
     {
         'username': 'patient',
@@ -32,8 +21,8 @@ demo_users = [
         'phone': '+1-555-0101',
         'date_of_birth': '1992-03-15',
         'gender': 'Female',
-        'created_at': datetime.utcnow(),
-        'updated_at': datetime.utcnow(),
+        'created_at': datetime.utcnow().isoformat(),
+        'updated_at': datetime.utcnow().isoformat(),
         'is_active': True
     },
     {
@@ -44,8 +33,8 @@ demo_users = [
         'user_id': 'MED-4029',
         'email': 'elena.vance@prms.hospital',
         'phone': '+1-555-0102',
-        'created_at': datetime.utcnow(),
-        'updated_at': datetime.utcnow(),
+        'created_at': datetime.utcnow().isoformat(),
+        'updated_at': datetime.utcnow().isoformat(),
         'is_active': True
     },
     {
@@ -57,17 +46,16 @@ demo_users = [
         'email': 'robert.chen@prms.hospital',
         'phone': '+1-555-0103',
         'specialization': 'Cardiology',
-        'created_at': datetime.utcnow(),
-        'updated_at': datetime.utcnow(),
+        'created_at': datetime.utcnow().isoformat(),
+        'updated_at': datetime.utcnow().isoformat(),
         'is_active': True
     }
 ]
 
-db.users.insert_many(demo_users)
-print("✅ Demo users created (patient, medical, doctor)")
-
+# Demo medical records
 demo_records = [
     {
+        'id': 'rec-001',
         'patient_id': 'PRMS-84920',
         'record_type': 'lab_report',
         'title': 'Comprehensive Metabolic Panel',
@@ -87,21 +75,20 @@ demo_records = [
             'temperature': '98.6°F'
         },
         'doctor_notes': 'All metabolic indices within optimal limits. Continue current dietary regimen.',
-        'visit_date': datetime(2026, 8, 14),
+        'visit_date': '2026-08-14T10:00:00Z',
         'facility': 'Quest Diagnostics',
         'doctor_name': 'Dr. Robert Chen',
         'created_by': 'DOC-1082',
-        'created_at': datetime.utcnow(),
-        'updated_at': datetime.utcnow(),
+        'created_at': datetime.utcnow().isoformat(),
+        'updated_at': datetime.utcnow().isoformat(),
         'status': 'active'
     }
 ]
 
-db.medical_records.insert_many(demo_records)
-print("✅ Demo medical records created")
-
+# Demo appointments
 demo_appointments = [
     {
+        'id': 'apt-001',
         'patient_id': 'PRMS-84920',
         'doctor_id': 'DOC-1082',
         'appointment_date': '2026-08-24',
@@ -109,67 +96,75 @@ demo_appointments = [
         'type': 'PRMS Telehealth (Video)',
         'notes': 'Review quarterly metabolic panel and fasting glucose trajectory.',
         'status': 'confirmed',
-        'created_at': datetime.utcnow(),
-        'updated_at': datetime.utcnow()
+        'created_at': datetime.utcnow().isoformat(),
+        'updated_at': datetime.utcnow().isoformat()
     }
 ]
 
-db.appointments.insert_many(demo_appointments)
-print("✅ Demo appointments created")
-
+# Demo health metrics
 demo_metrics = [
     {
+        'id': 'met-001',
         'patient_id': 'PRMS-84920',
         'metric_type': 'blood_glucose',
         'value': 92,
         'unit': 'mg/dL',
         'notes': 'Fasting glucose',
         'recorded_by': 'PRMS-84920',
-        'recorded_at': datetime(2026, 8, 14, 8, 0),
-        'created_at': datetime.utcnow()
+        'recorded_at': '2026-08-14T08:00:00Z',
+        'created_at': datetime.utcnow().isoformat()
     },
     {
+        'id': 'met-002',
         'patient_id': 'PRMS-84920',
         'metric_type': 'blood_pressure',
         'value': '120/78',
         'unit': 'mmHg',
         'notes': 'Morning reading',
         'recorded_by': 'PRMS-84920',
-        'recorded_at': datetime(2026, 8, 14, 8, 15),
-        'created_at': datetime.utcnow()
+        'recorded_at': '2026-08-14T08:15:00Z',
+        'created_at': datetime.utcnow().isoformat()
     }
 ]
 
-db.health_metrics.insert_many(demo_metrics)
-print("✅ Demo health metrics created")
-
+# Demo notifications
 demo_notifications = [
     {
+        'id': 'not-001',
         'user_id': 'PRMS-84920',
         'type': 'info',
         'title': 'Appointment Reminder',
         'message': 'Cardiology follow-up consultation with Dr. Robert Chen is on Aug 24, 10:30 AM.',
         'is_read': False,
-        'created_at': datetime.utcnow()
+        'created_at': datetime.utcnow().isoformat()
     }
 ]
 
-db.notifications.insert_many(demo_notifications)
-print("✅ Demo notifications created")
+# Save to JSON files
+with open(os.path.join(data_dir, 'users.json'), 'w') as f:
+    json.dump(demo_users, f, indent=2)
+print("[OK] Demo users created")
 
-db.users.create_index('username', unique=True)
-db.users.create_index('user_id', unique=True)
-db.medical_records.create_index('patient_id')
-db.appointments.create_index([('patient_id', 1), ('appointment_date', -1)])
-db.health_metrics.create_index([('patient_id', 1), ('recorded_at', -1)])
-print("✅ Database indexes created")
+with open(os.path.join(data_dir, 'medical_records.json'), 'w') as f:
+    json.dump(demo_records, f, indent=2)
+print("[OK] Demo medical records created")
 
-print(f"\n{'='*60}")
-print("✅ Database initialization complete!")
-print(f"{'='*60}")
-print("\n📋 Demo Credentials:")
+with open(os.path.join(data_dir, 'appointments.json'), 'w') as f:
+    json.dump(demo_appointments, f, indent=2)
+print("[OK] Demo appointments created")
+
+with open(os.path.join(data_dir, 'health_metrics.json'), 'w') as f:
+    json.dump(demo_metrics, f, indent=2)
+print("[OK] Demo health metrics created")
+
+with open(os.path.join(data_dir, 'notifications.json'), 'w') as f:
+    json.dump(demo_notifications, f, indent=2)
+print("[OK] Demo notifications created")
+
+print("\n" + "="*60)
+print("Data initialization complete!")
+print("="*60)
+print("\nDemo Credentials:")
 print("   Patient: username=patient, password=patient123")
 print("   Medical Staff: username=medical, password=medical123")
 print("   Doctor: username=doctor, password=doctor123\n")
-
-client.close()

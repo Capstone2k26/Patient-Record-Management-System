@@ -1,10 +1,30 @@
 from datetime import datetime
-from bson import ObjectId
+import json
+import os
+from flask import current_app
+import uuid
 
 class MedicalRecord:
     @staticmethod
-    def create(db, data):
+    def _get_data_file():
+        return os.path.join(current_app.config['DATA_DIR'], 'medical_records.json')
+    
+    @staticmethod
+    def _load_records():
+        with open(MedicalRecord._get_data_file(), 'r') as f:
+            return json.load(f)
+    
+    @staticmethod
+    def _save_records(records):
+        with open(MedicalRecord._get_data_file(), 'w') as f:
+            json.dump(records, f, indent=2)
+    
+    @staticmethod
+    def create(data):
+        records = MedicalRecord._load_records()
+        
         record_data = {
+            'id': str(uuid.uuid4()),
             'patient_id': data['patient_id'],
             'record_type': data.get('record_type', 'general'),
             'title': data['title'],
@@ -16,53 +36,52 @@ class MedicalRecord:
             'vital_signs': data.get('vital_signs', {}),
             'doctor_notes': data.get('doctor_notes', ''),
             'attachments': data.get('attachments', []),
-            'visit_date': data.get('visit_date', datetime.utcnow()),
+            'visit_date': data.get('visit_date', datetime.now().isoformat()),
             'facility': data.get('facility', ''),
             'doctor_name': data.get('doctor_name', ''),
             'created_by': data.get('created_by'),
-            'created_at': datetime.utcnow(),
-            'updated_at': datetime.utcnow(),
+            'created_at': datetime.now().isoformat(),
+            'updated_at': datetime.now().isoformat(),
             'status': data.get('status', 'active')
         }
         
-        result = db.medical_records.insert_one(record_data)
-        record_data['_id'] = str(result.inserted_id)
+        records.append(record_data)
+        MedicalRecord._save_records(records)
         return record_data
     
     @staticmethod
-    def find_by_patient(db, patient_id, limit=None):
-        query = {'patient_id': patient_id, 'status': 'active'}
-        cursor = db.medical_records.find(query).sort('visit_date', -1)
+    def find_by_patient(patient_id, limit=None):
+        records = MedicalRecord._load_records()
+        patient_records = [r for r in records if r['patient_id'] == patient_id and r['status'] == 'active']
+        patient_records.sort(key=lambda x: x.get('visit_date', ''), reverse=True)
         
         if limit:
-            cursor = cursor.limit(limit)
-        
-        records = []
-        for record in cursor:
-            record['_id'] = str(record['_id'])
-            records.append(record)
-        return records
+            return patient_records[:limit]
+        return patient_records
     
     @staticmethod
-    def find_by_id(db, record_id):
-        record = db.medical_records.find_one({'_id': ObjectId(record_id)})
-        if record:
-            record['_id'] = str(record['_id'])
-        return record
+    def find_by_id(record_id):
+        records = MedicalRecord._load_records()
+        return next((r for r in records if r['id'] == record_id), None)
     
     @staticmethod
-    def update(db, record_id, data):
-        data['updated_at'] = datetime.utcnow()
-        result = db.medical_records.update_one(
-            {'_id': ObjectId(record_id)},
-            {'$set': data}
-        )
-        return result.modified_count > 0
+    def update(record_id, data):
+        records = MedicalRecord._load_records()
+        for i, record in enumerate(records):
+            if record['id'] == record_id:
+                data['updated_at'] = datetime.now().isoformat()
+                records[i].update(data)
+                MedicalRecord._save_records(records)
+                return True
+        return False
     
     @staticmethod
-    def delete(db, record_id):
-        result = db.medical_records.update_one(
-            {'_id': ObjectId(record_id)},
-            {'$set': {'status': 'deleted', 'updated_at': datetime.utcnow()}}
-        )
-        return result.modified_count > 0
+    def delete(record_id):
+        records = MedicalRecord._load_records()
+        for i, record in enumerate(records):
+            if record['id'] == record_id:
+                records[i]['status'] = 'deleted'
+                records[i]['updated_at'] = datetime.now().isoformat()
+                MedicalRecord._save_records(records)
+                return True
+        return False
