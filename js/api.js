@@ -14,7 +14,7 @@ const API = {
     }
     
     try {
-      const response = await fetch(${API_BASE_URL}, {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...options,
         headers
       });
@@ -50,29 +50,29 @@ const API = {
   
   records: {
     getAll: (patientId) => {
-      const query = patientId ? ?patient_id= : '';
-      return API.request(/records);
+      const query = patientId ? `?patient_id=${encodeURIComponent(patientId)}` : '';
+      return API.request(`/records${query}`);
     },
     
-    getById: (id) => API.request(/records/),
+    getById: (id) => API.request(`/records/${id}`),
     
     create: (recordData) => API.request('/records', {
       method: 'POST',
       body: JSON.stringify(recordData)
     }),
     
-    update: (id, recordData) => API.request(/records/, {
+    update: (id, recordData) => API.request(`/records/${id}`, {
       method: 'PUT',
       body: JSON.stringify(recordData)
     }),
     
-    delete: (id) => API.request(/records/, { method: 'DELETE' }),
+    delete: (id) => API.request(`/records/${id}`, { method: 'DELETE' }),
 
     upload: async (file) => {
       const token = localStorage.getItem('prms_token');
       const formData = new FormData();
       formData.append('file', file);
-      const res = await fetch(${API_BASE_URL}/records/upload, {
+      const res = await fetch(`${API_BASE_URL}/records/upload`, {
         method: 'POST',
         headers: token ? { 'Authorization': 'Bearer ' + token } : {},
         body: formData
@@ -89,20 +89,20 @@ const API = {
       body: JSON.stringify(appointmentData)
     }),
     
-    update: (id, appointmentData) => API.request(/appointments/, {
+    update: (id, appointmentData) => API.request(`/appointments/${id}`, {
       method: 'PUT',
       body: JSON.stringify(appointmentData)
     }),
     
-    cancel: (id) => API.request(/appointments/, { method: 'DELETE' })
+    cancel: (id) => API.request(`/appointments/${id}`, { method: 'DELETE' })
   },
   
   healthMetrics: {
     getAll: (patientId, type) => {
       let query = '';
-      if (patientId) query += ?patient_id=;
-      if (type) query += ${query ? '&' : '?'}type=;
-      return API.request(/health-metrics);
+      if (patientId) query += `?patient_id=${encodeURIComponent(patientId)}`;
+      if (type) query += `${query ? '&' : '?'}type=${encodeURIComponent(type)}`;
+      return API.request(`/health-metrics${query}`);
     },
     
     create: (metricData) => API.request('/health-metrics', {
@@ -112,17 +112,17 @@ const API = {
     
     getChartData: (patientId, type) => {
       let query = '';
-      if (patientId) query += ?patient_id=;
-      if (type) query += ${query ? '&' : '?'}type=;
-      return API.request(/health-metrics/chart-data);
+      if (patientId) query += `?patient_id=${encodeURIComponent(patientId)}`;
+      if (type) query += `${query ? '&' : '?'}type=${encodeURIComponent(type)}`;
+      return API.request(`/health-metrics/chart-data${query}`);
     },
 
     getHistory: (patientId, startDate, endDate) => {
       let query = '';
-      if (patientId) query += ?patient_id=;
-      if (startDate) query += ${query ? '&' : '?'}start_date=;
-      if (endDate) query += ${query ? '&' : '?'}end_date=;
-      return API.request(/health-metrics/history);
+      if (patientId) query += `?patient_id=${encodeURIComponent(patientId)}`;
+      if (startDate) query += `${query ? '&' : '?'}start_date=${encodeURIComponent(startDate)}`;
+      if (endDate) query += `${query ? '&' : '?'}end_date=${encodeURIComponent(endDate)}`;
+      return API.request(`/health-metrics/history${query}`);
     }
   },
   
@@ -148,7 +148,7 @@ const API = {
       method: 'POST'
     }),
 
-    getGraphInsights: (metricType = 'blood_pressure') => API.request(/ai/health-graph-insights?type=)
+    getGraphInsights: (metricType = 'blood_pressure') => API.request(`/ai/health-graph-insights?type=${encodeURIComponent(metricType)}`)
   }
 };
 

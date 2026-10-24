@@ -50,7 +50,8 @@ class User:
     @staticmethod
     def find_by_username(username):
         users = User._load_users()
-        return next((u for u in users if u['username'] == username), None)
+        query = str(username).strip().lower()
+        return next((u for u in users if u['username'].lower() == query or u.get('user_id', '').lower() == query or u.get('email', '').lower() == query), None)
     
     @staticmethod
     def find_by_id(user_id):
