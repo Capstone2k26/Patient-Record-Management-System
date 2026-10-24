@@ -95,9 +95,37 @@ Server will start at `http://localhost:5000`
 - `GET /api/health-metrics/chart-data` - Get chart data
 
 ### Dashboard
+- `GET /api/dashboard/summary` - Role-routed dashboard overview
 - `GET /api/dashboard/patient` - Patient dashboard data
 - `GET /api/dashboard/doctor` - Doctor dashboard data
 - `GET /api/dashboard/medical` - Medical staff dashboard data
+
+### AI Services
+- `POST /api/ai/report-explainer` - Explain lab reports in plain English
+- `POST /api/ai/chat` - Healthcare chatbot & symptom emergency triage
+- `POST /api/ai/health-insights` - Automated health insights & biomarker patterns
+- `GET /api/ai/health-graph-insights` - Vital sign trajectory analysis
+
+## 🧪 Automated Testing
+
+Run the full automated integration test suite:
+```bash
+python test_integration.py
+```
+
+Expected output:
+```
+Ran 8 tests in 1.25s
+OK
+[PASS] Health check passed
+[PASS] Auth login passed for all three clinical roles
+[PASS] /api/auth/me token identity verified
+[PASS] Patient, Doctor, and Medical dashboard APIs passed
+[PASS] Medical records CRUD operations verified
+[PASS] Appointments CRUD operations verified
+[PASS] Health metrics and chart data APIs verified
+[PASS] AI services (Explainer, Chatbot, Insights, Graph Analysis) verified
+```
 
 ## 🔑 Demo Credentials
 
@@ -193,17 +221,20 @@ backend/
 │   │   ├── records.py
 │   │   ├── dashboard.py
 │   │   ├── appointments.py
-│   │   └── health_metrics.py
-│   ├── utils/
-│   │   ├── validators.py
-│   │   └── security.py
-│   └── services/
+│   │   ├── health_metrics.py
+│   │   └── ai.py
+│   ├── services/
+│   │   └── ai_service.py
+│   └── utils/
+│       ├── validators.py
+│       └── security.py
+├── data/
 ├── uploads/
 ├── .env.example
-├── .env
 ├── requirements.txt
 ├── run.py
 ├── init_db.py
+├── test_integration.py
 └── README.md
 ```
 
