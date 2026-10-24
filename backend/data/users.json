@@ -1,7 +1,7 @@
 [
   {
     "username": "patient",
-    "password_hash": "scrypt:32768:8:1$Nx7ch20o5uCiT8Cg$7a49c97440bbe636e40ea0538142cb98f3374aa23503ebea672a3eb80fcdf1fd7d7fa9ea9701d641ad2b6d38dc1687db8259c10a1a5c29835b778bdb3ab53573",
+    "password_hash": "scrypt:32768:8:1$yvqne1NH65GzkP5W$4ab622b07ea7c7b03b1aa8ed5b7fd147041cef7c1f4b46f6b1bf085d34c655fcbdc4f4fef06512bdef1270200d2aa6fa5ca9cf0e82fcb31b966f3493e3c97cca",
     "role": "patient",
     "name": "Sarah Jenkins",
     "user_id": "PRMS-84920",
@@ -9,33 +9,33 @@
     "phone": "+1-555-0101",
     "date_of_birth": "1992-03-15",
     "gender": "Female",
-    "created_at": "2026-10-22T11:11:01.632650",
-    "updated_at": "2026-10-22T11:11:01.632705",
+    "created_at": "2026-10-24T00:13:57.978522",
+    "updated_at": "2026-10-24T00:13:57.978555",
     "is_active": true
   },
   {
     "username": "medical",
-    "password_hash": "scrypt:32768:8:1$3HWM8EMmNQPpeRXZ$ca6f2637fc523f4bd886a1f45e8b05e7ab21ee73a8f92fe0593288727d08e4d65b019d328427a2b11c046b20eea1cad40ed30801b1c301c48d84aca5d4ac49f9",
+    "password_hash": "scrypt:32768:8:1$pFbn3vBvZUVm1ivh$d104c087b5a04cc290ca357802112087574eb7e69db61b67c166789dd0edd538567c967f29c0bd537371ec8e001849c508e6978dd80b21e32eb8423d564bb08d",
     "role": "medical",
     "name": "Elena Vance, RN",
     "user_id": "MED-4029",
     "email": "elena.vance@prms.hospital",
     "phone": "+1-555-0102",
-    "created_at": "2026-10-22T11:11:01.746660",
-    "updated_at": "2026-10-22T11:11:01.746689",
+    "created_at": "2026-10-24T00:13:58.077212",
+    "updated_at": "2026-10-24T00:13:58.077262",
     "is_active": true
   },
   {
     "username": "doctor",
-    "password_hash": "scrypt:32768:8:1$G33xEKIja7znn8yX$8f35f4cad9645a87f46727f663a925e895781f431ed5bf7c12c26c1f312c85bb2220f3f91548c31c64d5b0104ca9917cbf1df809b443f21c5852a8b847cf0c76",
+    "password_hash": "scrypt:32768:8:1$dBdPLVXp2I47MHpN$a2cdd7ea9eafbc46f7e3412afcb79d08edf3c074054b27b46e79b1fb4d9f42aad2da199bca2f23d9985f3e8574e912d0a05fca3356a023dad062fdba27dd733e",
     "role": "doctor",
     "name": "Dr. Robert Chen, MD",
     "user_id": "DOC-1082",
     "email": "robert.chen@prms.hospital",
     "phone": "+1-555-0103",
     "specialization": "Cardiology",
-    "created_at": "2026-10-22T11:11:01.852380",
-    "updated_at": "2026-10-22T11:11:01.852406",
+    "created_at": "2026-10-24T00:13:58.181675",
+    "updated_at": "2026-10-24T00:13:58.181697",
     "is_active": true
   }
 ]

@@ -10,11 +10,11 @@ const API = {
     };
     
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+      headers['Authorization'] = 'Bearer ' + token;
     }
     
     try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      const response = await fetch(${API_BASE_URL}, {
         ...options,
         headers
       });
@@ -50,23 +50,35 @@ const API = {
   
   records: {
     getAll: (patientId) => {
-      const query = patientId ? `?patient_id=${patientId}` : '';
-      return API.request(`/records${query}`);
+      const query = patientId ? ?patient_id= : '';
+      return API.request(/records);
     },
     
-    getById: (id) => API.request(`/records/${id}`),
+    getById: (id) => API.request(/records/),
     
     create: (recordData) => API.request('/records', {
       method: 'POST',
       body: JSON.stringify(recordData)
     }),
     
-    update: (id, recordData) => API.request(`/records/${id}`, {
+    update: (id, recordData) => API.request(/records/, {
       method: 'PUT',
       body: JSON.stringify(recordData)
     }),
     
-    delete: (id) => API.request(`/records/${id}`, { method: 'DELETE' })
+    delete: (id) => API.request(/records/, { method: 'DELETE' }),
+
+    upload: async (file) => {
+      const token = localStorage.getItem('prms_token');
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch(${API_BASE_URL}/records/upload, {
+        method: 'POST',
+        headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+        body: formData
+      });
+      return res.json();
+    }
   },
   
   appointments: {
@@ -77,20 +89,20 @@ const API = {
       body: JSON.stringify(appointmentData)
     }),
     
-    update: (id, appointmentData) => API.request(`/appointments/${id}`, {
+    update: (id, appointmentData) => API.request(/appointments/, {
       method: 'PUT',
       body: JSON.stringify(appointmentData)
     }),
     
-    cancel: (id) => API.request(`/appointments/${id}`, { method: 'DELETE' })
+    cancel: (id) => API.request(/appointments/, { method: 'DELETE' })
   },
   
   healthMetrics: {
     getAll: (patientId, type) => {
       let query = '';
-      if (patientId) query += `?patient_id=${patientId}`;
-      if (type) query += `${query ? '&' : '?'}type=${type}`;
-      return API.request(`/health-metrics${query}`);
+      if (patientId) query += ?patient_id=;
+      if (type) query += ${query ? '&' : '?'}type=;
+      return API.request(/health-metrics);
     },
     
     create: (metricData) => API.request('/health-metrics', {
@@ -100,16 +112,43 @@ const API = {
     
     getChartData: (patientId, type) => {
       let query = '';
-      if (patientId) query += `?patient_id=${patientId}`;
-      if (type) query += `${query ? '&' : '?'}type=${type}`;
-      return API.request(`/health-metrics/chart-data${query}`);
+      if (patientId) query += ?patient_id=;
+      if (type) query += ${query ? '&' : '?'}type=;
+      return API.request(/health-metrics/chart-data);
+    },
+
+    getHistory: (patientId, startDate, endDate) => {
+      let query = '';
+      if (patientId) query += ?patient_id=;
+      if (startDate) query += ${query ? '&' : '?'}start_date=;
+      if (endDate) query += ${query ? '&' : '?'}end_date=;
+      return API.request(/health-metrics/history);
     }
   },
   
   dashboard: {
     getPatientDashboard: () => API.request('/dashboard/patient'),
     getDoctorDashboard: () => API.request('/dashboard/doctor'),
-    getMedicalDashboard: () => API.request('/dashboard/medical')
+    getMedicalDashboard: () => API.request('/dashboard/medical'),
+    getSummary: () => API.request('/dashboard/summary')
+  },
+
+  ai: {
+    explainReport: (reportText, reportType) => API.request('/ai/report-explainer', {
+      method: 'POST',
+      body: JSON.stringify({ report_text: reportText, report_type: reportType })
+    }),
+
+    chat: (message, history = []) => API.request('/ai/chat', {
+      method: 'POST',
+      body: JSON.stringify({ message, history })
+    }),
+
+    getHealthInsights: () => API.request('/ai/health-insights', {
+      method: 'POST'
+    }),
+
+    getGraphInsights: (metricType = 'blood_pressure') => API.request(/ai/health-graph-insights?type=)
   }
 };
 

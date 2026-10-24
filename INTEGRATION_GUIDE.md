@@ -402,10 +402,10 @@ Full API documentation is available in `backend/README.md`
 - [x] Demo data seeded
 - [x] API client (api.js) created
 - [x] Authentication integration script
-- [ ] Update HTML files with script tags
-- [ ] Test login flow
-- [ ] Bind dashboard data to UI
-- [ ] Test all CRUD operations
+- [x] Update HTML files with script tags
+- [x] Test login flow
+- [x] Bind dashboard data to UI
+- [x] Test all CRUD operations
 
 ---
 

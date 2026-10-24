@@ -8,7 +8,43 @@
     "type": "PRMS Telehealth (Video)",
     "notes": "Review quarterly metabolic panel and fasting glucose trajectory.",
     "status": "confirmed",
-    "created_at": "2026-10-22T11:11:01.852456",
-    "updated_at": "2026-10-22T11:11:01.852468"
+    "created_at": "2026-10-24T00:13:58.181738",
+    "updated_at": "2026-10-24T00:13:58.181746"
+  },
+  {
+    "id": "f88a7cde-0ea0-4586-9788-91e5da2f5981",
+    "patient_id": "PRMS-84920",
+    "doctor_id": "DOC-1082",
+    "appointment_date": "2026-09-01",
+    "appointment_time": "11:00 AM",
+    "type": "Follow-up Consultation",
+    "notes": "Updated consultation notes",
+    "status": "cancelled",
+    "created_at": "2026-10-24T00:14:52.642099",
+    "updated_at": "2026-10-24T00:14:52.647468"
+  },
+  {
+    "id": "554d637a-1f50-4747-8490-52b402547f59",
+    "patient_id": "PRMS-84920",
+    "doctor_id": "DOC-1082",
+    "appointment_date": "2026-09-01",
+    "appointment_time": "11:00 AM",
+    "type": "Follow-up Consultation",
+    "notes": "Updated consultation notes",
+    "status": "cancelled",
+    "created_at": "2026-10-24T00:16:54.743922",
+    "updated_at": "2026-10-24T00:16:54.748779"
+  },
+  {
+    "id": "9bc046c0-c556-43bd-b01a-2ae20f051b21",
+    "patient_id": "PRMS-84920",
+    "doctor_id": "DOC-1082",
+    "appointment_date": "2026-09-01",
+    "appointment_time": "11:00 AM",
+    "type": "Follow-up Consultation",
+    "notes": "Updated consultation notes",
+    "status": "cancelled",
+    "created_at": "2026-10-24T00:19:58.005673+00:00",
+    "updated_at": "2026-10-24T00:19:58.010325+00:00"
   }
 ]

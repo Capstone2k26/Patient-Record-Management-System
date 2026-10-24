@@ -1,0 +1,15 @@
+[
+  {
+    "id": "rx-001",
+    "patient_id": "PRMS-84920",
+    "patient_name": "Sarah Jenkins",
+    "medication": "Metformin HCl 500mg",
+    "dosage": "500mg",
+    "frequency": "1 tablet daily with dinner",
+    "doctor_id": "DOC-1082",
+    "doctor_name": "Dr. Robert Chen, MD",
+    "refills": 3,
+    "status": "pending",
+    "created_at": "2026-10-24T00:13:58.186582"
+  }
+]

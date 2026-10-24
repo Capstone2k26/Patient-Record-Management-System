@@ -76,8 +76,34 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function showToast(title, message, type) {
-    // Your existing toast implementation
-    console.log(`[${type.toUpperCase()}] ${title}: ${message}`);
+    const container = document.getElementById('toastContainer');
+    if (!container) {
+      console.log(`[${type.toUpperCase()}] ${title}: ${message}`);
+      return;
+    }
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    let iconSvg = '<i class="fa-solid fa-circle-info" style="font-size: 18px; color: var(--primary);"></i>';
+    if (type === 'success') {
+      iconSvg = '<i class="fa-solid fa-circle-check" style="font-size: 18px; color: var(--success);"></i>';
+    } else if (type === 'error') {
+      iconSvg = '<i class="fa-solid fa-circle-xmark" style="font-size: 18px; color: var(--danger);"></i>';
+    }
+    toast.innerHTML = `
+      <div class="toast-icon">${iconSvg}</div>
+      <div class="toast-content">
+        <span class="toast-title">${title}</span>
+        <span class="toast-message">${message}</span>
+      </div>
+    `;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(40px)';
+      setTimeout(() => {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 300);
+    }, 3500);
   }
 
   // Auto-fill demo credentials

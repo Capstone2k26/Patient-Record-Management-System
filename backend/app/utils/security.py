@@ -7,9 +7,8 @@ def role_required(*allowed_roles):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            from flask import current_app
             user_id = get_jwt_identity()
-            user = User.find_by_id(current_app.db, user_id)
+            user = User.find_by_id(user_id)
             
             if not user or user['role'] not in allowed_roles:
                 return jsonify({'error': 'Insufficient permissions'}), 403
@@ -18,8 +17,8 @@ def role_required(*allowed_roles):
         return decorated_function
     return decorator
 
-def can_access_patient_data(current_user_id, patient_id, db):
-    current_user = User.find_by_id(db, current_user_id)
+def can_access_patient_data(current_user_id, patient_id):
+    current_user = User.find_by_id(current_user_id)
     
     if not current_user:
         return False

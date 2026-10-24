@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 import os
 
@@ -21,8 +21,8 @@ demo_users = [
         'phone': '+1-555-0101',
         'date_of_birth': '1992-03-15',
         'gender': 'Female',
-        'created_at': datetime.utcnow().isoformat(),
-        'updated_at': datetime.utcnow().isoformat(),
+        'created_at': datetime.now(timezone.utc).isoformat(),
+        'updated_at': datetime.now(timezone.utc).isoformat(),
         'is_active': True
     },
     {
@@ -33,8 +33,8 @@ demo_users = [
         'user_id': 'MED-4029',
         'email': 'elena.vance@prms.hospital',
         'phone': '+1-555-0102',
-        'created_at': datetime.utcnow().isoformat(),
-        'updated_at': datetime.utcnow().isoformat(),
+        'created_at': datetime.now(timezone.utc).isoformat(),
+        'updated_at': datetime.now(timezone.utc).isoformat(),
         'is_active': True
     },
     {
@@ -46,8 +46,8 @@ demo_users = [
         'email': 'robert.chen@prms.hospital',
         'phone': '+1-555-0103',
         'specialization': 'Cardiology',
-        'created_at': datetime.utcnow().isoformat(),
-        'updated_at': datetime.utcnow().isoformat(),
+        'created_at': datetime.now(timezone.utc).isoformat(),
+        'updated_at': datetime.now(timezone.utc).isoformat(),
         'is_active': True
     }
 ]
@@ -79,8 +79,8 @@ demo_records = [
         'facility': 'Quest Diagnostics',
         'doctor_name': 'Dr. Robert Chen',
         'created_by': 'DOC-1082',
-        'created_at': datetime.utcnow().isoformat(),
-        'updated_at': datetime.utcnow().isoformat(),
+        'created_at': datetime.now(timezone.utc).isoformat(),
+        'updated_at': datetime.now(timezone.utc).isoformat(),
         'status': 'active'
     }
 ]
@@ -96,8 +96,8 @@ demo_appointments = [
         'type': 'PRMS Telehealth (Video)',
         'notes': 'Review quarterly metabolic panel and fasting glucose trajectory.',
         'status': 'confirmed',
-        'created_at': datetime.utcnow().isoformat(),
-        'updated_at': datetime.utcnow().isoformat()
+        'created_at': datetime.now(timezone.utc).isoformat(),
+        'updated_at': datetime.now(timezone.utc).isoformat()
     }
 ]
 
@@ -112,7 +112,7 @@ demo_metrics = [
         'notes': 'Fasting glucose',
         'recorded_by': 'PRMS-84920',
         'recorded_at': '2026-08-14T08:00:00Z',
-        'created_at': datetime.utcnow().isoformat()
+        'created_at': datetime.now(timezone.utc).isoformat()
     },
     {
         'id': 'met-002',
@@ -123,7 +123,7 @@ demo_metrics = [
         'notes': 'Morning reading',
         'recorded_by': 'PRMS-84920',
         'recorded_at': '2026-08-14T08:15:00Z',
-        'created_at': datetime.utcnow().isoformat()
+        'created_at': datetime.now(timezone.utc).isoformat()
     }
 ]
 
@@ -136,7 +136,7 @@ demo_notifications = [
         'title': 'Appointment Reminder',
         'message': 'Cardiology follow-up consultation with Dr. Robert Chen is on Aug 24, 10:30 AM.',
         'is_read': False,
-        'created_at': datetime.utcnow().isoformat()
+        'created_at': datetime.now(timezone.utc).isoformat()
     }
 ]
 
@@ -160,6 +160,43 @@ print("[OK] Demo health metrics created")
 with open(os.path.join(data_dir, 'notifications.json'), 'w') as f:
     json.dump(demo_notifications, f, indent=2)
 print("[OK] Demo notifications created")
+
+# Demo prescriptions
+demo_prescriptions = [
+    {
+        'id': 'rx-001',
+        'patient_id': 'PRMS-84920',
+        'patient_name': 'Sarah Jenkins',
+        'medication': 'Metformin HCl 500mg',
+        'dosage': '500mg',
+        'frequency': '1 tablet daily with dinner',
+        'doctor_id': 'DOC-1082',
+        'doctor_name': 'Dr. Robert Chen, MD',
+        'refills': 3,
+        'status': 'pending',
+        'created_at': datetime.now(timezone.utc).isoformat()
+    }
+]
+
+# Demo tasks
+demo_tasks = [
+    {
+        'id': 'task-001',
+        'assigned_to': 'MED-4029',
+        'title': 'Process Pharmacy Refill Request for Sarah Jenkins',
+        'priority': 'High',
+        'status': 'pending',
+        'created_at': datetime.now(timezone.utc).isoformat()
+    }
+]
+
+with open(os.path.join(data_dir, 'prescriptions.json'), 'w') as f:
+    json.dump(demo_prescriptions, f, indent=2)
+print("[OK] Demo prescriptions created")
+
+with open(os.path.join(data_dir, 'tasks.json'), 'w') as f:
+    json.dump(demo_tasks, f, indent=2)
+print("[OK] Demo tasks created")
 
 print("\n" + "="*60)
 print("Data initialization complete!")

@@ -32,12 +32,13 @@ def create_app():
     # Initialize data files
     init_data_files(data_dir)
     
-    from app.routes import auth, records, dashboard, appointments, health_metrics
+    from app.routes import auth, records, dashboard, appointments, health_metrics, ai
     app.register_blueprint(auth.bp)
     app.register_blueprint(records.bp)
     app.register_blueprint(dashboard.bp)
     app.register_blueprint(appointments.bp)
     app.register_blueprint(health_metrics.bp)
+    app.register_blueprint(ai.bp)
     
     @app.route('/api/health')
     def health_check():
@@ -51,7 +52,9 @@ def init_data_files(data_dir):
         'medical_records.json': [],
         'appointments.json': [],
         'health_metrics.json': [],
-        'notifications.json': []
+        'notifications.json': [],
+        'prescriptions.json': [],
+        'tasks.json': []
     }
     
     for filename, default_data in files.items():
